@@ -1,0 +1,283 @@
+<header class="header">
+    <div class="header-nav">
+        <div class="header-left">
+            <div class="logo">
+                <img src="picture/通用资源/logo.png" alt="TV CONNECT" style="height: 30px; vertical-align: middle; margin-right: 8px;">
+                TV CONNECT
+            </div>
+            <nav class="nav-links">
+                <a href="index.html">首页</a>
+                <a href="机器人.html">机器人</a>
+                <a href="价格.html">价格</a>
+                <a href="help.html">帮助</a>
+                <!-- 工单支持链接已暂时隐藏 -->
+                <!-- <a href="ticket.html">工单支持</a> -->
+                <a href="关于我们.html">关于我们</a>
+            </nav>
+        </div>
+        <div class="user-section" id="user-section">
+            <button class="btn btn-outline" id="activation-button">输入激活码</button>
+            <div class="user-validity">
+                <span class="validity-label" id="validity-remaining"></span>
+            </div>
+            <button class="btn btn-outline" id="logout-button">退出登录</button>
+        </div>
+    </div>
+</header>
+
+<style>
+    /* Header Styles */
+    .header {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid #e0e0e0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+    
+    .header-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        flex: 1;
+    }
+
+    .logo {
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 20px;
+        flex: 1;
+        justify-content: center;
+    }
+
+    .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            font-size: 16px;
+        }
+
+        .nav-links a.active {
+            color: #000;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #333;
+        }
+
+    .user-section {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-left: auto;
+    }
+
+    .user-validity {
+        text-align: right;
+    }
+
+    .validity-label {
+        font-weight: 500;
+        color: #333;
+        font-size: 16px;
+    }
+
+    /* 按钮样式 - 保持黑白色调 */
+    .btn {
+        padding: 8px 16px;
+        border-radius: 4px;
+        font-weight: 500;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        background: #333; /* 黑色背景 */
+        color: white; /* 白色文字 */
+        border: none;
+        font-size: 16px;
+        transition: background-color 0.3s;
+    }
+    
+    .btn:hover {
+        background: #1a1a1a; /* 悬停时更深的黑色 */
+    }
+    
+    .btn-outline {
+        border: 1px solid #333;
+        color: #333;
+        background: transparent;
+    }
+    
+    .btn-outline:hover {
+        background: #f0f0f0;
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 768px) {
+        .header-nav {
+            flex-direction: column;
+            padding: 10px;
+        }
+        
+        .header-left {
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .nav-links {
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .user-section {
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .user-validity {
+            text-align: center;
+        }
+    }
+</style>
+
+<!-- 引入激活码弹窗组件 -->
+<script type="module">
+    import { activationModal } from './components/activation-modal.js';
+    window.activationModal = activationModal;
+</script>
+
+<!-- 兼容不支持ES模块的浏览器 -->
+<script nomodule defer src="./components/activation-modal.js"></script>
+
+<script>
+    // 页面加载完成后执行
+    document.addEventListener('DOMContentLoaded', function() {
+        // 初始化有效期显示
+        updateValidityDisplay();
+        
+        // 绑定输入激活码按钮事件
+        const activationButton = document.getElementById('activation-button');
+        if (activationButton) {
+            activationButton.addEventListener('click', function() {
+                if (window.activationModal) {
+                    window.activationModal.open();
+                }
+            });
+        }
+        
+        // 绑定退出登录事件
+        const logoutButton = document.getElementById('logout-button');
+        if (logoutButton) {
+            logoutButton.addEventListener('click', function() {
+                logoutUser();
+            });
+        }
+    });
+    
+    // 更新有效期显示
+    function updateValidityDisplay() {
+        console.log('updateValidityDisplay函数被调用');
+        
+        // 从localStorage获取session_id
+        const sessionId = localStorage.getItem('session_id');
+        console.log('session_id值:', sessionId);
+        
+        const validityElement = document.getElementById('validity-remaining');
+        console.log('validityElement元素:', validityElement);
+        
+        if (!validityElement) {
+            console.log('未找到validity-remaining元素');
+            return;
+        }
+        
+        // 先显示加载中
+        validityElement.textContent = '加载中...';
+        console.log('已设置加载中状态');
+        
+        if (!sessionId) {
+            console.log('session_id不存在，显示请先登录');
+            validityElement.textContent = '请先登录';
+            return;
+        }
+        
+        // 调用API获取用户信息
+        console.log('准备调用API:', `http://43.134.114.73:8000/api/user/profile?session_id=${sessionId}`);
+        fetch(`http://43.134.114.73:8000/api/user/profile?session_id=${sessionId}`)
+            .then(response => {
+                console.log('API响应状态:', response.status);
+                if (!response.ok) {
+                    throw new Error('获取用户信息失败，状态码: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('API返回数据:', data);
+                // 检查响应状态
+                if (data.status === 'success' && data.membership_expire_at) {
+                    // 显示有效期信息
+                    validityElement.textContent = `有效期: ${data.membership_expire_at}`;
+                } else {
+                    validityElement.textContent = '未找到有效期信息';
+                }
+            })
+            .catch(error => {
+                console.error('获取用户信息失败:', error);
+                validityElement.textContent = '加载失败，请稍后重试';
+            });
+    }
+    
+    // 用户退出登录
+    function logoutUser() {
+        // 调用登出API
+        fetch('http://43.134.114.73:8000/api/auth/logout', {
+            method: 'POST',
+            credentials: 'include' // 包含cookies
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('登出失败');
+            }
+            return response.json();
+        })
+        .catch(error => {
+            console.error('登出失败:', error);
+        })
+        .finally(() => {
+            // 清除本地存储的所有用户信息和session数据
+            localStorage.removeItem('user_id');
+            localStorage.removeItem('username');
+            localStorage.removeItem('email');
+            localStorage.removeItem('session_id');
+            localStorage.removeItem('rememberedUser');
+            // 清除任何可能存在的旧版JWT相关数据
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('token_type');
+            // 刷新页面或跳转到首页
+            window.location.href = 'index.html';
+        });
+    }
+</script>

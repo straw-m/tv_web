@@ -1,0 +1,182 @@
+<!-- 统一导航栏组件 -->
+<header class="header">
+    <div class="header-nav">
+        <div class="header-left">
+            <div class="logo">
+                <img src="picture/通用资源/logo.png" alt="TV CONNECT" style="height: 30px; vertical-align: middle; margin-right: 8px;">
+                TV CONNECT
+            </div>
+            <nav class="nav-links">
+                <a href="index.html">首页</a>
+                <a href="机器人.html">机器人</a>
+                <a href="价格.html">价格</a>
+                <a href="help.html">帮助</a>
+                <!-- 工单支持链接已暂时隐藏 -->
+                <!-- <a href="ticket.html">工单支持</a> -->
+                <a href="关于我们.html">关于我们</a>
+            </nav>
+        </div>
+        <div class="auth-buttons">
+            <a href="auth.html" class="btn btn-outline">登录</a>
+            <a href="auth.html" class="btn">注册</a>
+        </div>
+    </div>
+</header>
+
+<style>
+    /* Header Styles */
+    .header {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid #e0e0e0;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
+    .header-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        flex: 1;
+    }
+
+    .logo {
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 20px;
+        flex: 1;
+        justify-content: center;
+    }
+
+    .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            font-size: 16px;
+        }
+
+        .nav-links a.active {
+            color: #000;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #333;
+        }
+
+    .auth-buttons {
+        display: flex;
+        gap: 15px;
+        margin-left: auto;
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-left: auto;
+    }
+
+    .user-details {
+        text-align: right;
+    }
+
+    .username {
+        font-weight: 500;
+        color: #333;
+        font-size: 16px;
+        display: block;
+    }
+
+    .membership-expiry {
+        font-size: 12px;
+        color: #666;
+        display: block;
+        margin-top: 2px;
+    }
+
+    /* 按钮样式 - 保持黑白色调 */
+    .btn {
+        padding: 8px 16px;
+        border-radius: 4px;
+        font-weight: 500;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        background: #333; /* 黑色背景 */
+        color: white; /* 白色文字 */
+        border: none;
+        font-size: 16px;
+        transition: background-color 0.3s;
+    }
+    
+    .btn:hover {
+        background: #1a1a1a; /* 悬停时更深的黑色 */
+    }
+    
+    .btn-outline {
+        border: 1px solid #333;
+        color: #333;
+        background: transparent;
+    }
+    
+    .btn-outline:hover {
+        background: #f0f0f0;
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 768px) {
+        .header-nav {
+            flex-direction: column;
+            padding: 10px;
+        }
+        
+        .header-left {
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .nav-links {
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .auth-buttons {
+            gap: 10px;
+        }
+        
+        .user-info {
+            flex-direction: column;
+            gap: 10px;
+        }
+    }
+</style>
+
+<script>
+    // 未登录状态的导航栏 - 不包含任何登录状态判断逻辑
+    // 此文件仅用于用户未登录时显示
+</script>

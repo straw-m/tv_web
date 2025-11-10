@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>加密货币交易订单生成器 - API管理平台</title>
+    <link rel="stylesheet" href="app/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="app/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="app/dist/app.css" />
+    <link rel="stylesheet" href="assets/font/font-awesome.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #9691FF; /* 最深的颜色 - 底层背景 */
+            min-height: 100vh;
+        }
+
+        /* Header Styles */
+        .header {
+            background: #242123; /* 较深的颜色 - 导航栏背景 */
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 30px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: rgb(213, 224, 254); /* 最浅的颜色 - 标题文字 */
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: rgb(213, 224, 254); /* 最浅的颜色 - 导航链接文字 */
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            background: rgba(213, 224, 254, 0.1); /* 最浅颜色的半透明版本 */
+            color: white;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(213, 224, 254, 0.1); /* 最浅颜色的半透明版本 */
+            min-width: 250px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 20px;
+            display: none;
+            z-index: 1001;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, rgb(213, 224, 254), rgb(141, 133, 255));
+            color: rgb(47, 29, 105); /* 最深的颜色 - 按钮文字 */
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: rgb(213, 224, 254); /* 最浅的颜色 - 按钮文字 */
+            border: 2px solid rgb(213, 224, 254); /* 最浅的颜色 - 按钮边框 */
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* API Info Styles */
+        .api-form-group {
+            margin-bottom: 20px;
+        }
+
+        .api-form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: rgb(213, 224, 254); /* 最浅的颜色 - 标签文字 */
+        }
+
+        .api-form-group input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid rgb(213, 224, 254); /* 最浅的颜色 - 输入框边框 */
+            border-radius: 6px;
+            font-size: 14px;
+            background: rgba(213, 224, 254, 0.1); /* 最浅颜色的半透明版本 */
+            color: white;
+        }
+
+        .api-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .api-tab {
+            padding: 8px 16px;
+            background: rgba(213, 224, 254, 0.1); /* 最浅颜色的半透明版本 */
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            color: rgb(213, 224, 254); /* 最浅的颜色 - 标签文字 */
+        }
+
+        .api-tab.active {
+            background: rgb(213, 224, 254); /* 最浅的颜色 - 活跃标签背景 */
+            color: rgb(47, 29, 105); /* 最深的颜色 - 活跃标签文字 */
+        }
+
+        .api-tab-content {
+            display: none;
+        }
+
+        .api-tab-content.active {
+            display: block;
+        }
+        /* Main Layout */
+        .main-container {
+            display: flex;
+            min-height: calc(100vh - 5rem);
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 18.75rem; /* 300px */
+            background: rgba(252, 252, 252, 0.1); /* 中等深度的颜色 - 侧边栏背景 */
+            backdrop-filter: blur(10px);
+            padding: 1.25rem; /* 20px */
+            border-right: 1px solid rgba(0,0,0,0.1);
+            border-radius: 0.9375rem; /* 15px */
+            margin-left: 8.125rem; /* 130px */
+            margin-top: 1.875rem; /* 30px */
+        }
+
+        .sidebar h3 {
+            color: rgb(213, 224, 254); /* 最浅的颜色 - 标题文字 */
+            margin-bottom: 1.25rem; /* 20px */
+            font-size: 1.125rem; /* 18px */
+        }
+
+        .template-list {
+            list-style: none;
+        }
+
+        .template-item {
+            background: rgba(213, 224, 254, 0.5); /* 最浅颜色的半透明版本，透明度改为50% */
+            border: 1px solid rgba(213, 224, 254, 0.5); /* 最浅颜色的半透明边框，透明度改为50% */
+            border-radius: 0.5rem; /* 8px */
+            padding: 0.625rem; /* 10px */
+            margin-bottom: 0.625rem; /* 10px */
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .template-name {
+            font-weight: 600;
+            color: rgb(213, 224, 254); /* 最浅的颜色 - 模板名称 */
+            margin-bottom: 0.3125rem; /* 5px */
+        }
+
+        .template-info {
+            font-size: 0.75rem; /* 12px */
+            color: rgba(213, 224, 254, 0.8); /* 最浅颜色的半透明版本 - 模板信息 */
+        }
+
+        /* Content Area */
+        .content-area {
+            flex: 1;
+            padding: 1.875rem; /* 30px */
+        }
+
+        /* 加密货币交易订单生成器 */
+        .generator-container {
+            max-width: 50rem; /* 800px */
+            margin: 0 auto;
+            background: rgba(135, 130, 250, 0.95); /* 较浅的颜色 - 生成器容器背景 */
+            border-radius: 1.25rem; /* 20px */
+            box-shadow: 0 1.25rem 2.5rem rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .generator-header {
+            background: rgb(213, 224, 254); /* 最浅的颜色 - 生成器头部背景 */
+            color: rgb(47, 29, 105); /* 最深的颜色 - 生成器标题文字 */
+            padding: 30px;
+            text-align: center;
+        }
+
+        .generator-header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .form-container {
+            padding: 40px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: rgb(47, 29, 105); /* 最深的颜色 - 表单标签文字 */
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid rgba(47, 29, 105, 0.2); /* 最深颜色的半透明边框 */
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9); /* 接近白色的背景 */
+            color: rgb(47, 29, 105); /* 最深的颜色 - 表单输入文字 */
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: rgb(47, 29, 105); /* 最深的颜色 - 聚焦边框 */
+            box-shadow: 0 0 0 3px rgba(47, 29, 105, 0.1); /* 最深颜色的半透明阴影 */
+            transform: translateY(-2px);
+        }
+
+        .currency-search {
+            position: relative;
+        }
+
+        .currency-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 2px solid rgba(47, 29, 105, 0.2); /* 最深颜色的半透明边框 */
+            border-top: none;
+            border-radius: 0 0 12px 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+
+        .currency-suggestion {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            border-bottom: 1px solid #f0f0f0;
+            color: rgb(47, 29, 105); /* 最深的颜色 - 建议文字 */
+        }
+
+        .currency-suggestion:hover {
+            background-color: rgba(213, 224, 254, 0.3); /* 最浅颜色的半透明版本 */
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .confirm-btn, .save-template-btn {
+            flex: 1;
+            padding: 18px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgb(47, 29, 105); /* 最深的颜色 - 按钮文字 */
+        }
+
+        .confirm-btn {
+            background: linear-gradient(135deg, rgb(213, 224, 254), rgba(213, 224, 254, 0.7));
+        }
+
+        .save-template-btn {
+            background: linear-gradient(135deg, rgba(213, 224, 254, 0.8), rgba(213, 224, 254, 0.5));
+        }
+
+        .confirm-btn:hover, .save-template-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .result-container {
+            margin-top: 30px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.9); /* 接近白色的背景 */
+            border-radius: 12px;
+            border: 2px solid rgba(47, 29, 105, 0.2); /* 最深颜色的半透明边框 */
+            display: none;
+        }
+
+        .result-container h3 {
+            margin-bottom: 15px;
+            color: rgb(47, 29, 105); /* 最深的颜色 - 结果标题文字 */
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .json-output {
+            background: rgb(47, 29, 105); /* 最深的颜色 - JSON输出背景 */
+            color: rgb(213, 224, 254); /* 最浅的颜色 - JSON输出文字 */
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgb(213, 224, 254); /* 最浅的颜色 - 复制按钮背景 */
+            color: rgb(47, 29, 105); /* 最深的颜色 - 复制按钮文字 */
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background-color 0.2s ease;
+        }
+
+        .copy-btn:hover {
+            background: rgba(213, 224, 254, 0.8); /* 最浅颜色的半透明版本 */
+        }
+
+        .copy-success {
+            background: rgba(255, 255, 255, 0.9) !important;
+        }
+
+        @media (max-width: 1024px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid rgba(162,143,182,0.1);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-nav {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 10px;
+                width: 100%;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+            
+            .generator-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="header-nav">
+            <div class="header-left">
+                <a href="#" class="logo">CryptoTrader Pro</a>
+                <ul class="nav-links">
+                    <li class="dropdown">
+                        <a href="#">用户API信息</a>
+                        <div class="dropdown-menu">
+                            <div class="api-tabs">
+                                <button class="api-tab active" data-tab="gate">Gate</button>
+                                <button class="api-tab" data-tab="okx">OKX</button>
+                                <button class="api-tab" data-tab="yingli">盈立</button>
+                            </div>
+                            <div class="api-tab-content active" id="gate">
+                                <div class="api-form-group">
+                                    <label>API密钥:</label>
+                                    <input type="text" id="gate-key" placeholder="输入Gate API密钥">
+                                </div>
+                                <div class="api-form-group">
+                                    <label>私钥:</label>
+                                    <input type="password" id="gate-secret" placeholder="输入Gate私钥">
+                                </div>
+                            </div>
+                            <div class="api-tab-content" id="okx">
+                                <div class="api-form-group">
+                                    <label>API密钥:</label>
+                                    <input type="text" id="okx-key" placeholder="输入OKX API密钥">
+                                </div>
+                                <div class="api-form-group">
+                                    <label>私钥:</label>
+                                    <input type="password" id="okx-secret" placeholder="输入OKX私钥">
+                                </div>
+                            </div>
+                            <div class="api-tab-content" id="yingli">
+                                <div class="api-form-group">
+                                    <label>API密钥:</label>
+                                    <input type="text" id="yingli-key" placeholder="输入盈立API密钥">
+                                </div>
+                                <div class="api-form-group">
+                                    <label>私钥:</label>
+                                    <input type="password" id="yingli-secret" placeholder="输入盈立私钥">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li><a href="#">警报信息</a></li>
+                    <li><a href="#">更多服务</a></li>
+                </ul>
+            </div>
+            <div class="auth-buttons">
+                <a href="#" class="btn btn-outline">登录</a>
+                <a href="#" class="btn btn-primary">注册</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h3>保存的模板</h3>
+            <ul class="template-list" id="templateList">
+                <li class="template-item" data-template-id="1">
+                    <div class="template-name">BTC杠杆交易模板</div>
+                    <div class="template-info">BTC/USDT - 10x杠杆 - 市价单</div>
+                </li>
+                <li class="template-item" data-template-id="2">
+                    <div class="template-name">ETH限价交易模板</div>
+                    <div class="template-info">ETH/USDT - 5x杠杆 - 限价单</div>
+                </li>
+                <li class="template-item" data-template-id="3">
+                    <div class="template-name">SOL快速交易模板</div>
+                    <div class="template-info">SOL/USDT - 2x杠杆 - 市价单</div>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Content Area -->
+        <main class="content-area">
+            <div class="generator-container">
+                <div class="generator-header">
+                    <h1>加密货币交易订单生成器</h1>
+                    <p>轻松创建专业的交易订单JSON数据</p>
+                </div>
+                
+                <div class="form-container">
+                    <form id="orderForm">
+                        <div class="form-grid">
+                            <div class="form-group currency-search">
+                                <label for="currency">交易币种</label>
+                                <input type="text" id="currency" placeholder="输入币种如BTC, ETH..." autocomplete="off">
+                                <div class="currency-suggestions" id="currencySuggestions"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="quantity">交易手数</label>
+                                <input type="number" id="quantity" step="1" min="1" placeholder="输入交易手数">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="leverage">杠杆倍数</label>
+                                <select id="leverage">
+                                    <option value="1">1x (无杠杆)</option>
+                                    <option value="2">2x</option>
+                                    <option value="3">3x</option>
+                                    <option value="5">5x</option>
+                                    <option value="10">10x</option>
+                                    <option value="20">20x</option>
+                                    <option value="50">50x</option>
+                                    <option value="100">100x</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="settlementCurrency">结算货币</label>
+                                <input type="text" id="settlementCurrency" value="USDT" placeholder="结算货币">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="orderType">订单类型</label>
+                                <select id="orderType">
+                                    <option value="market">市价单</option>
+                                    <option value="limit">限价单</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="action-buttons">
+                            <button type="submit" class="confirm-btn">生成交易订单</button>
+                            <button type="button" class="save-template-btn" id="saveTemplateBtn">保存为模板</button>
+                        </div>
+                    </form>
+                    
+                    <div class="result-container" id="resultContainer">
+                        <h3>生成的JSON数据</h3>
+                        <div class="json-output" id="jsonOutput">
+                            <button class="copy-btn" id="copyBtn">复制</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // 常用加密货币列表
+        const cryptocurrencies = [
+            'BTC', 'ETH', 'BNB', 'XRP', 'ADA', 'SOL', 'DOGE', 'DOT', 'MATIC', 'SHIB',
+            'AVAX', 'UNI', 'LINK', 'LTC', 'ATOM', 'XLM', 'ICP', 'VET', 'FIL', 'TRX',
+            'ETC', 'THETA', 'AAVE', 'XMR', 'ALGO', 'HBAR', 'EGLD', 'FLOW', 'MANA', 'SAND'
+        ];
+
+        // 预定义模板数据
+        const templateData = {
+            1: { currency: 'BTC', quantity: 1, leverage: 10, settlementCurrency: 'USDT', orderType: 'market' },
+            2: { currency: 'ETH', quantity: 2, leverage: 5, settlementCurrency: 'USDT', orderType: 'limit' },
+            3: { currency: 'SOL', quantity: 5, leverage: 2, settlementCurrency: 'USDT', orderType: 'market' }
+        };
+
+        // DOM元素
+        const currencyInput = document.getElementById('currency');
+        const currencySuggestions = document.getElementById('currencySuggestions');
+        const form = document.getElementById('orderForm');
+        const resultContainer = document.getElementById('resultContainer');
+        const jsonOutput = document.getElementById('jsonOutput');
+        const saveTemplateBtn = document.getElementById('saveTemplateBtn');
+
+        // API标签切换
+        document.querySelectorAll('.api-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // 移除所有活跃状态
+                document.querySelectorAll('.api-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.api-tab-content').forEach(c => c.classList.remove('active'));
+                
+                // 设置当前标签为活跃
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab).classList.add('active');
+            });
+        });
+
+        // 货币搜索功能
+        currencyInput.addEventListener('input', function() {
+            const query = this.value.toUpperCase();
+            const filteredCurrencies = cryptocurrencies.filter(crypto => 
+                crypto.includes(query)
+            );
+
+            if (query && filteredCurrencies.length > 0) {
+                currencySuggestions.innerHTML = '';
+                filteredCurrencies.slice(0, 8).forEach(crypto => {
+                    const suggestion = document.createElement('div');
+                    suggestion.className = 'currency-suggestion';
+                    suggestion.textContent = crypto;
+                    suggestion.addEventListener('click', () => {
+                        currencyInput.value = crypto;
+                        currencySuggestions.style.display = 'none';
+                    });
+                    currencySuggestions.appendChild(suggestion);
+                });
+                currencySuggestions.style.display = 'block';
+            } else {
+                currencySuggestions.style.display = 'none';
+            }
+        });
+
+        // 点击外部隐藏建议
+        document.addEventListener('click', function(e) {
+            if (!currencyInput.contains(e.target) && !currencySuggestions.contains(e.target)) {
+                currencySuggestions.style.display = 'none';
+            }
+        });
+
+        // 自动转换结算货币为大写
+        document.getElementById('settlementCurrency').addEventListener('input', function() {
+            this.value = this.value.toUpperCase();
+        });
+
+        // 模板点击事件
+        document.querySelectorAll('.template-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const templateId = item.dataset.templateId;
+                const template = templateData[templateId];
+                
+                if (template) {
+                    document.getElementById('currency').value = template.currency;
+                    document.getElementById('quantity').value = template.quantity;
+                    document.getElementById('leverage').value = template.leverage;
+                    document.getElementById('settlementCurrency').value = template.settlementCurrency;
+                    document.getElementById('orderType').value = template.orderType;
+                    
+                    // 高亮选中的模板
+                    document.querySelectorAll('.template-item').forEach(t => t.style.backgroundColor = '');
+                    item.style.backgroundColor = 'rgba(213, 224, 254, 0.2)'; // 使用最浅颜色的半透明版本高亮
+                }
+            });
+        });
+
+        // 表单提交处理
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const currency = document.getElementById('currency').value.toUpperCase();
+            const quantity = parseInt(document.getElementById('quantity').value);
+            const leverage = parseInt(document.getElementById('leverage').value);
+            const settlementCurrency = document.getElementById('settlementCurrency').value.toUpperCase();
+            const orderType = document.getElementById('orderType').value;
+
+            // 验证必填字段
+            if (!currency || !quantity || quantity < 1) {
+                alert('请填写完整的交易信息，交易手数最小为1。');
+                return;
+            }
+
+            // 构建JSON数据
+            const orderData = {
+                tradingPair: currency + '/' + settlementCurrency,
+                currency: currency,
+                quantity: quantity,
+                leverage: leverage,
+                settlementCurrency: settlementCurrency,
+                orderType: orderType,
+                price: orderType === 'market' ? "0" : "{{close}}",
+                side: "{{strategy.order.action}}",
+                timestamp: new Date().toISOString()
+            };
+
+            // 显示结果
+            const jsonString = JSON.stringify(orderData, null, 2);
+            jsonOutput.innerHTML = `<button class="copy-btn" id="copyBtn">复制</button>${jsonString}`;
+            resultContainer.style.display = 'block';
+            
+            // 重新绑定复制按钮事件
+            document.getElementById('copyBtn').addEventListener('click', copyToClipboard);
+            
+            // 滚动到结果
+            resultContainer.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // 保存模板功能
+        saveTemplateBtn.addEventListener('click', function() {
+            const currency = document.getElementById('currency').value.toUpperCase();
+            const quantity = parseInt(document.getElementById('quantity').value);
+            const leverage = parseInt(document.getElementById('leverage').value);
+            const settlementCurrency = document.getElementById('settlementCurrency').value.toUpperCase();
+            const orderType = document.getElementById('orderType').value;
+
+            if (!currency || !quantity) {
+                alert('请先填写交易信息再保存模板');
+                return;
+            }
+
+            const templateName = prompt('请输入模板名称:');
+            if (templateName) {
+                const templateList = document.getElementById('templateList');
+                const newTemplate = document.createElement('li');
+                newTemplate.className = 'template-item';
+                newTemplate.innerHTML = `
+                    <div class="template-name">${templateName}</div>
+                    <div class="template-info">${currency}/${settlementCurrency} - ${leverage}x杠杆 - ${orderType === 'market' ? '市价单' : '限价单'}</div>
+                `;
+                
+                // 添加点击事件
+                newTemplate.addEventListener('click', () => {
+                    document.getElementById('currency').value = currency;
+                    document.getElementById('quantity').value = quantity;
+                    document.getElementById('leverage').value = leverage;
+                    document.getElementById('settlementCurrency').value = settlementCurrency;
+                    document.getElementById('orderType').value = orderType;
+                });
+                
+                templateList.appendChild(newTemplate);
+                alert('模板保存成功！');
+            }
+        });
+
+        // 复制到剪贴板功能
+        function copyToClipboard() {
+            const jsonText = jsonOutput.textContent.replace('复制', '');
+            navigator.clipboard.writeText(jsonText).then(() => {
+                const copyButton = document.getElementById('copyBtn');
+                copyButton.textContent = '已复制!';
+                copyButton.classList.add('copy-success');
+                
+                setTimeout(() => {
+                    copyButton.textContent = '复制';
+                    copyButton.classList.remove('copy-success');
+                }, 2000);
+            }).catch(err => {
+                console.error('复制失败:', err);
+                alert('复制失败，请手动选择文本复制');
+            });
+        }
+    </script>
+</body>
+</html>

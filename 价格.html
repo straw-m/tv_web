@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV CONNECT - 价格方案</title>
+    <!-- 设置网站图标为圆形 -->
+    <link rel="icon" type="image/png" href="picture/通用资源/logo_url.png">
+    <link rel="shortcut icon" type="image/png" href="picture/通用资源/logo_url.png">
+    <!-- 确保在支持的浏览器中显示为圆形 -->
+    <link rel="mask-icon" href="picture/通用资源/logo_url.png" color="#5bbad5">
+    <!-- 移动设备图标 -->
+    <link rel="apple-touch-icon-precomposed" href="picture/通用资源/logo_url.png" />
+    <!-- 引入公共样式 -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        
+        /* 购买弹窗样式 */
+        #purchaseModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1001;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .modal-header h3 {
+            margin: 0;
+            color: #333;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .payment-option {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border: 2px solid #eee;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+        
+        .payment-option:hover {
+            border-color: #333;
+        }
+        
+        .payment-option.selected {
+            border-color: #333;
+            background-color: #f9f9f9;
+        }
+        
+        .payment-option input[type="radio"] {
+            margin-right: 12px;
+            width: 18px;
+            height: 18px;
+        }
+        
+        .payment-option label {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            margin: 0;
+            font-weight: normal;
+        }
+        
+        .payment-icon {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+        
+        .modal-footer {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+            justify-content: flex-end;
+        }
+        
+        .purchase-info {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f5f5f5;
+            border-radius: 6px;
+        }
+        
+        .purchase-info p {
+            margin: 5px 0;
+        }
+        
+        .purchase-info .price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .tab-menu {
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: #f1f1f1;
+        }
+
+        .tab-menu.active {
+            background: #333;
+            color: white;
+        }
+
+        .wrap {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .pricing-box-style2 {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            border: 1px solid #e0e0e0;
+            position: relative;
+        }
+
+        .popular {
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            background: #333;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        .content {
+            margin-bottom: 20px;
+        }
+
+        .heading {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .color_1 {
+            color: #666;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .price {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .date {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .pricing-box-style2 ul {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .pricing-box-style2 li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .position-btn {
+            text-align: center;
+        }
+
+        .btn span {
+            display: inline-block;
+        }
+        
+        /* Main Layout */
+        .main-container {
+            min-height: calc(100vh - 80px);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            width: 100%;
+            max-width: 1200px;
+            padding: 30px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body>
+    <!-- 统一导航栏容器 -->
+    <div id="navbar-container"></div>
+
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- 有效期显示区域 -->
+            <div style="text-align: right; margin-bottom: 20px;">
+                <span class="validity-label" id="validity-remaining">有效期：加载中...</span>
+            </div>
+            
+            <!-- 价格模板部分 -->
+            <section class="pricing-section">
+                
+                <div class="tab-content active" id="tab-content-1">
+                    <div class="wrap row-3">
+                        <div class="pricing-box-style2">
+                            <div class="content">
+                                <div class="flex width-full">
+                                    <div class="inner">
+                                        <h5 class="heading">按月付费</h5>
+                                        <p class="color_1">最基础的套餐</p>
+                                    </div>
+                                    <div class="inner">
+                                        <p class="price">20 usdt</p>
+                                        <p class="date">10usdt (推广期优惠)</p>
+                                    </div>
+                                </div>
+                            <ul>
+                                <li>
+                                    <img src="./assets/images/icon/check-circle-7.svg" alt=""><span>目前支持加密货币合约下单，后续会支持期权</span>
+                                </li>
+                                <li>
+                                    <img src="./assets/images/icon/check-circle-7.svg" alt=""><span>24小时交易</span>
+                                </li>
+                                <li>
+                                    <img src="./assets/images/icon/check-circle-7.svg" alt=""><span>最多可挂载30个机器人</span>
+                                </li>
+                            </ul>
+                            <div class="position-btn">
+                                <a href="#" class="btn purchase-btn" data-plan="按月付费" data-price="10usdt"><span>下单</span></a>
+                            </div>
+                            </div>
+                        </div>
+
+                        <div class="pricing-box-style2 active">
+                            <p class="popular">最受欢迎</p>
+                            <div class="content">
+                                <div class="flex width-full">
+                                    <div class="inner">
+                                        <h5 class="heading">半年付费</h5>
+                                        <p class="color_1">更优惠的价格</p>
+                                    </div>
+                                    <div class="inner">
+                                        <p class="price">110 usdt</p>
+                                        <p class="date">78 usdt (推广期优惠)</p>
+                                    </div>
+                                </div>
+                            <ul>
+                                <li>
+                                    <img src="./assets/images/icon/check-circle-7.svg" alt=""><span>目前支持合约下单，后续会支持期权</span>
+                                </li>
+                                <li>
+                                    <img src="./assets/images/icon/check-circle-7.svg" alt=""><span>24小时交易</span>
+                                </li>
+                                <li>
+                                    <img src="./assets/images/icon/check-circle-7.svg" alt=""><span>最多可挂载30个机器人</span>
+                                </li>
+                            </ul>
+                            <div class="position-btn">
+                                <a href="#" class="btn purchase-btn" data-plan="半年付费" data-price="78usdt"><span>下单</span></a>
+                            </div>
+                            </div>
+                        </div>
+
+                        <div class="pricing-box-style2">
+                            <div class="content">
+                                <div class="flex width-full">
+                                    <div class="inner">
+                                        <h5 class="heading">按年付费</h5>
+                                        <p class="color_1">最优惠的价格</p>
+                                    </div>
+                                    <div class="inner">
+                                        <p class="price">210 usdt</p>
+                                        <p class="date">99 usdt (推广期优惠)</p>
+                                    </div>
+                                </div>
+                                <ul>
+                                    <li>
+                                        <img src="./assets/images/icon/check-circle-7.svg" alt=""><span>目前支持合约下单，后续会支持期权</span>
+                                    </li>
+                                    <li>
+                                        <img src="./assets/images/icon/check-circle-7.svg" alt=""><span>24小时交易</span>
+                                    </li>
+                                    <li>
+                                        <img src="./assets/images/icon/check-circle-7.svg" alt=""><span>最多可挂载30个机器人</span>
+                                    </li>
+                                </ul>
+                            <div class="position-btn">
+                                <a href="#" class="btn purchase-btn" data-plan="按年付费" data-price="99usdt"><span>下单</span></a>
+                            </div>
+                            </div>
+                        </div>
+                    </div>  
+                </div>
+
+                <div class="tab-content" id="tab-content-2">
+                    <div class="wrap row-3"> 
+                        <div class="pricing-box-style2">
+                            <div class="content">
+                                <div class="flex width-full">
+                                    <div class="inner">
+                                        <h5 class="heading">高级包年会员</h5>
+                                        <p class="color_1">提供更多的附加服务</p>
+                                    </div>
+                                    <div class="inner">
+                                        <p class="price">400 usdt</p>
+                                        <p class="date">199 usdt (推广期优惠)</p>
+                                    </div>
+                                </div>
+                            <ul>
+                                <li>
+                                    <img src="./assets/images/icon/check-circle-7.svg" alt="">将你的交易逻辑实现为trandingview的策略并挂载</span>
+                                </li>
+                                <li>
+                                    <img src="./assets/images/icon/check-circle-7.svg" alt=""><span>支持1次修改</span>
+                                </li>
+                                <li>
+                                    <img src="./assets/images/icon/check-circle-7.svg" alt=""><span>代码量少于700行</span>
+                                </li>
+                            </ul>
+                            <div class="position-btn">
+                                <a href="#" class="btn purchase-btn" data-plan="高级包年会员" data-price="199usdt"><span>下单</span></a>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="pricing-box-style2">
+                            <div class="content">
+                                <div class="flex width-full">
+                                    <div class="inner">
+                                        <h5 class="heading">定制服务</h5>
+                                        <p class="color_1">为您实现你个性化的需求</p>
+                                    </div>
+                                    <div class="inner">
+                                        <p class="price">联系我们的工作人员</p>
+                                        <img src="picture/微信二维码.jpg" style="width: 200px; max-width: 100%; height: auto; 
+                                        border: 1px solid #ddd; border-radius: 8px; 
+                                        box-shadow: 0 4px 8px rgba(0,0,0,0.1);" alt="微信二维码">
+                                    </div>
+                                </div>
+                            <ul>
+                                <li><span class="desc"></span></li>
+                            </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- 购买弹窗 -->
+    <div id="purchaseModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1001;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>确认购买</h3>
+                <button class="close-modal" id="closePurchaseModal">&times;</button>
+            </div>
+            
+            <div class="purchase-info">
+                <p>套餐：<span id="selectedPlan">按月付费</span></p>
+                <p>价格：<span id="selectedPrice" class="price">10usdt</span></p>
+            </div>
+            
+            <h4>选择支付方式</h4>
+            
+            <div class="payment-option" data-method="alipay">
+                <input type="radio" id="alipay" name="paymentMethod" value="alipay" checked>
+                <label for="alipay">
+                    <span class="payment-icon">
+                        <i class="fa fa-credit-card"></i>
+                    </span>
+                    支付宝
+                </label>
+            </div>
+            
+            <div class="payment-option" data-method="binance">
+                <input type="radio" id="binance" name="paymentMethod" value="binance">
+                <label for="binance">
+                    <span class="payment-icon">
+                        <i class="fa fa-btc"></i>
+                    </span>
+                    币安支付
+                </label>
+            </div>
+            
+            <div class="modal-footer">
+                <button id="cancelPurchaseBtn" class="btn btn-outline">取消</button>
+                <button id="confirmPurchaseBtn" class="btn">确认支付</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入激活码弹窗组件 -->
+    <script type="module">
+        import { activationModal } from './components/activation-modal.js';
+        window.activationModal = activationModal;
+    </script>
+    
+    <!-- 兼容不支持ES模块的浏览器 -->
+    <script nomodule defer src="./components/activation-modal.js"></script>
+
+    <script>
+        // 加载导航栏
+        function loadNavbar() {
+            // 检查用户是否登录（这里简化处理，实际应根据后端判断）
+            const isLoggedIn = localStorage.getItem('user_id') && localStorage.getItem('session_id');
+            
+            // 选择要加载的导航栏类型
+            const navbarFile = isLoggedIn ? 'navbar-loggedin.html' : 'navbar.html';
+            
+            // 加载导航栏HTML
+            fetch(navbarFile)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('加载导航栏失败');
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    // 注入导航栏HTML到页面
+                    const navbarContainer = document.createElement('div');
+                    navbarContainer.id = 'navbar-container';
+                    navbarContainer.innerHTML = html;
+                    document.body.insertBefore(navbarContainer, document.body.firstChild);
+                    
+                    // 设置当前页面的active状态
+                    setActiveNavItem('价格.html');
+                     
+                    // 在导航栏加载完成后，绑定激活码按钮事件
+                    setTimeout(() => {
+                        if (window.activationModal) {
+                            const activationButton = document.getElementById('activation-button');
+                            if (activationButton) {
+                                activationButton.addEventListener('click', function() {
+                                    window.activationModal.open();
+                                });
+                            }
+                        }
+                        
+                        // 绑定退出登录按钮事件
+                        const logoutButton = document.getElementById('logout-button');
+                        if (logoutButton) {
+                            logoutButton.addEventListener('click', function() {
+                                // 直接调用登出函数或定义登出逻辑
+                                fetch('http://43.134.114.73:8000/api/auth/logout', {
+                                    method: 'POST',
+                                    credentials: 'include'
+                                })
+                                .catch(error => {
+                                    console.error('登出失败:', error);
+                                })
+                                .finally(() => {
+                                    // 清除本地存储的所有用户信息和session数据
+                                    localStorage.removeItem('user_id');
+                                    localStorage.removeItem('username');
+                                    localStorage.removeItem('email');
+                                    localStorage.removeItem('session_id');
+                                    localStorage.removeItem('rememberedUser');
+                                    localStorage.removeItem('access_token');
+                                    localStorage.removeItem('token_type');
+                                    // 刷新页面或跳转到首页
+                                    window.location.href = 'index.html';
+                                });
+                            });
+                        }
+                    }, 100);
+                })
+                .catch(error => {
+                    console.error('加载导航栏失败:', error);
+                });
+        }
+        
+        // 设置当前页面的导航项为active状态
+        function setActiveNavItem(currentPage) {
+            // 等待导航栏加载完成
+            setTimeout(() => {
+                const navLinks = document.querySelectorAll('.nav-links a');
+                
+                navLinks.forEach(link => {
+                    // 获取链接的href属性值
+                    const href = link.getAttribute('href');
+                    
+                    // 如果链接指向当前页面，则添加active类
+                    if (href === currentPage) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+            }, 100);
+        }
+        
+        // 获取并显示用户有效期信息
+        function fetchUserProfileAndDisplayValidity() {
+            const validityElement = document.getElementById('validity-remaining');
+            if (validityElement) {
+                validityElement.textContent = '加载中...';
+                validityElement.style.color = '#333';
+            }
+        }
+        
+        // 登出用户函数
+        function logoutUser() {
+            // 发送登出请求到API
+            fetch('http://43.134.114.73:8000/api/auth/logout', {
+                method: 'POST',
+                credentials: 'include'
+            })
+            .catch(error => {
+                console.error('登出请求失败:', error);
+            })
+            .finally(() => {
+                // 清除本地存储的所有用户信息和session数据
+                localStorage.removeItem('user_id');
+                localStorage.removeItem('username');
+                localStorage.removeItem('email');
+                localStorage.removeItem('session_id');
+                localStorage.removeItem('rememberedUser');
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('token_type');
+                // 刷新页面或跳转到首页
+                window.location.href = 'index.html';
+            });
+        }
+        
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 加载导航栏
+            loadNavbar();
+            
+            // 获取并显示用户有效期信息
+            fetchUserProfileAndDisplayValidity();
+            
+            // 价格标签切换
+            document.querySelectorAll('.tab-menu').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.tab-menu').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    tab.classList.add('active');
+                    const tabId = tab.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+
+            // 购买弹窗功能
+            const purchaseModal = document.getElementById('purchaseModal');
+            const purchaseButtons = document.querySelectorAll('.purchase-btn');
+            const closePurchaseModal = document.getElementById('closePurchaseModal');
+            const cancelPurchaseBtn = document.getElementById('cancelPurchaseBtn');
+            const confirmPurchaseBtn = document.getElementById('confirmPurchaseBtn');
+            const selectedPlan = document.getElementById('selectedPlan');
+            const selectedPrice = document.getElementById('selectedPrice');
+
+            // 打开购买弹窗
+            purchaseButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const plan = button.getAttribute('data-plan');
+                    const price = button.getAttribute('data-price');
+                    
+                    if (selectedPlan && selectedPrice) {
+                        selectedPlan.textContent = plan;
+                        selectedPrice.textContent = price;
+                    }
+                    
+                    if (purchaseModal) {
+                        purchaseModal.style.display = 'flex';
+                    }
+                });
+            });
+
+            // 关闭购买弹窗
+            function closePurchase() {
+                if (purchaseModal) {
+                    purchaseModal.style.display = 'none';
+                }
+            }
+
+            if (closePurchaseModal) {
+                closePurchaseModal.addEventListener('click', closePurchase);
+            }
+            if (cancelPurchaseBtn) {
+                cancelPurchaseBtn.addEventListener('click', closePurchase);
+            }
+
+            // 确认购买
+            if (confirmPurchaseBtn) {
+                confirmPurchaseBtn.addEventListener('click', () => {
+                    // 这里可以添加购买逻辑
+                    alert('购买请求已提交，我们会尽快处理！');
+                    closePurchase();
+                });
+            }
+
+            // 点击模态框外部关闭
+            window.addEventListener('click', (event) => {
+                if (event.target === purchaseModal) {
+                    closePurchase();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

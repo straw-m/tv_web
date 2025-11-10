@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>登录/注册 - TV CONNECT</title>
+    <!-- 设置网站图标为圆形 -->
+    <link rel="icon" type="image/png" href="picture/通用资源/logo_url.png">
+    <link rel="shortcut icon" type="image/png" href="picture/通用资源/logo_url.png">
+    <!-- 确保在支持的浏览器中显示为圆形 -->
+    <link rel="mask-icon" href="picture/通用资源/logo_url.png" color="#5bbad5">
+    <!-- 移动设备图标 -->
+    <link rel="apple-touch-icon-precomposed" href="picture/通用资源/logo_url.png" />
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            color: #333;
+            background-color: #f8f8f8;
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        a {
+            color: #333;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        a:hover {
+            color: #000;
+        }
+        /* 容器样式 */
+        .auth-container {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            max-width: 1000px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: row;
+        }
+        /* 左侧品牌区域 */
+        .auth-brand {
+            background-color: #000;
+            color: #fff;
+            padding: 60px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .brand-content h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        .brand-content p {
+            font-size: 16px;
+            opacity: 0.8;
+            margin-bottom: 40px;
+        }
+        .brand-features {
+            margin-bottom: 40px;
+        }
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        .feature-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        .feature-icon svg {
+            width: 14px;
+            height: 14px;
+        }
+        .feature-text h3 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        .feature-text p {
+            font-size: 14px;
+            opacity: 0.7;
+            margin: 0;
+        }
+        /* 右侧表单区域 */
+        .auth-form {
+            padding: 60px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 40px;
+            border-bottom: 1px solid #eee;
+        }
+        .tab-button {
+            padding: 15px 0;
+            margin-right: 30px;
+            background: none;
+            border: none;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            position: relative;
+            color: #999;
+            transition: color 0.3s;
+        }
+        .tab-button.active {
+            color: #000;
+        }
+        .tab-button.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #000;
+        }
+        .form-group {
+            margin-bottom: 25px;
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 14px;
+            color: #333;
+        }
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #000;
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+        }
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .remember-me {
+            display: flex;
+            align-items: center;
+        }
+        .remember-me input[type="checkbox"] {
+            margin-right: 8px;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+        .forgot-password {
+            font-size: 14px;
+            color: #666;
+        }
+        .forgot-password:hover {
+            color: #000;
+        }
+        .form-button {
+            width: 100%;
+            padding: 14px;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-bottom: 20px;
+        }
+        .form-button:hover {
+            background-color: #333;
+        }
+        .form-divider {
+            display: flex;
+            align-items: center;
+            margin: 30px 0;
+        }
+        .form-divider::before, .form-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background-color: #eee;
+        }
+        .form-divider span {
+            padding: 0 15px;
+            font-size: 14px;
+            color: #999;
+        }
+        .social-login {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .social-button {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .social-button:hover {
+            border-color: #000;
+            background-color: #f8f8f8;
+        }
+        .social-button svg {
+            width: 20px;
+            height: 20px;
+        }
+        .register-link {
+            text-align: center;
+            font-size: 14px;
+        }
+        .register-link a {
+            color: #000;
+            font-weight: 500;
+        }
+        /* 表单容器 */
+        .form-container {
+            display: none;
+        }
+        .form-container.active {
+            display: block;
+        }
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .auth-container {
+                flex-direction: column;
+            }
+            .auth-brand {
+                padding: 40px;
+                text-align: center;
+            }
+            .auth-form {
+                padding: 40px;
+            }
+            .feature-item {
+                justify-content: center;
+                text-align: center;
+            }
+            .social-login {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <!-- 左侧品牌区域 -->
+        <div class="auth-brand">
+            <div class="brand-content">
+                <h1>加密货币交易平台</h1>
+                <p>安全、高效的加密货币自动交易解决方案，让您的数字资产实现稳健增长</p>
+            </div>
+            <div class="brand-features">
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 1L3 5V11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11V5L12 1Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M16 11.37C16.41 11.15 16.93 11 17.5 11C18.88 11 20 12.12 20 13.5C20 14.88 18.88 16 17.5 16H9C7.62 16 6.5 14.88 6.5 13.5C6.5 12.12 7.62 11 9 11H16Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M9 18H9.01" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 14H12.01" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M15 18H15.01" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="feature-text">
+                        <h3>安全保障</h3>
+                        <p>多重加密技术保障您的资产安全</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M16 2V6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M8 2V10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M2 12H22" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M2 16H10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M22 20V16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M14 20V14" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="feature-text">
+                        <h3>智能交易</h3>
+                        <p>AI驱动的交易策略，自动执行最优交易</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8.5 14.5L11 12L8.5 9.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M15.5 9.5L13 12L15.5 14.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="feature-text">
+                        <h3>24/7 支持</h3>
+                        <p>全天候客户服务，随时解决您的问题</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 右侧表单区域 -->
+        <div class="auth-form">
+            <div class="auth-tabs">
+                <button class="tab-button active" data-tab="login">登录</button>
+                <button class="tab-button" data-tab="register">注册</button>
+                <button class="tab-button" data-tab="forgot-password">忘记密码</button>
+            </div>
+            
+           
+            
+            <!-- 登录表单 -->
+            <div id="login" class="form-container active">
+                <div class="form-group">
+                    <label class="form-label" for="login-username">用户名</label>
+                    <input type="text" id="login-username" class="form-input" placeholder="请输入您的用户名" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="login-password">密码</label>
+                    <input type="password" id="login-password" class="form-input" placeholder="请输入您的密码" required>
+                </div>
+                <div class="form-options">
+                    <div class="remember-me">
+                        <input type="checkbox" id="remember-me">
+                        <label for="remember-me">记住我</label>
+                    </div>
+                    <a href="#" class="forgot-password">忘记密码？</a>
+                </div>
+                <button class="form-button" type="submit">登录</button>
+                <div class="form-divider">
+                    <span>或</span>
+                </div>
+
+                <p class="register-link">
+                    还没有账号？<a href="#" id="switch-to-register">立即注册</a>
+                </p>
+            </div>
+            
+            <!-- 注册表单 -->
+            <div id="register" class="form-container">
+                <div class="form-group">
+                    <label class="form-label" for="register-email">电子邮箱</label>
+                    <input type="email" id="register-email" class="form-input" placeholder="请输入您的电子邮箱" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">验证码</label>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="text" maxlength="1" class="verification-input" placeholder="-" required>
+                        <input type="text" maxlength="1" class="verification-input" placeholder="-" required>
+                        <input type="text" maxlength="1" class="verification-input" placeholder="-" required>
+                        <input type="text" maxlength="1" class="verification-input" placeholder="-" required>
+                        <input type="text" maxlength="1" class="verification-input" placeholder="-" required>
+                        <input type="text" maxlength="1" class="verification-input" placeholder="-" required>
+                        <button type="button" id="send-code-btn" class="form-button" style="padding: 0 15px; min-width: 120px;">发送验证码</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="register-username">用户名</label>
+                    <input type="text" id="register-username" class="form-input" placeholder="请设置用户名" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="register-password">设置密码</label>
+                    <input type="password" id="register-password" class="form-input" placeholder="请设置6-20位密码" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="register-confirm">确认密码</label>
+                    <input type="password" id="register-confirm" class="form-input" placeholder="请再次输入密码" required>
+                </div>
+                <div class="form-options">
+                    <div class="remember-me">
+                        <input type="checkbox" id="agree-terms" required>
+                        <label for="agree-terms">我已阅读并同意<a href="#">服务条款</a>和<a href="#">隐私政策</a></label>
+                    </div>
+                </div>
+                <button class="form-button" type="submit" id="register-submit-btn">注册</button>
+                <div class="form-divider">
+                    <span>或</span>
+                </div>
+  
+                <p class="register-link">
+                    已有账号？<a href="#" id="switch-to-login">立即登录</a>
+                </p>
+            </div>
+            
+            <!-- 忘记密码表单 -->
+            <div id="forgot-password" class="form-container">
+                <div class="form-group">
+                    <label class="form-label" for="forgot-email">电子邮箱</label>
+                    <input type="email" id="forgot-email" class="form-input" placeholder="请输入您的电子邮箱" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">验证码</label>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="text" maxlength="1" class="forgot-verification-input" placeholder="-" required>
+                        <input type="text" maxlength="1" class="forgot-verification-input" placeholder="-" required>
+                        <input type="text" maxlength="1" class="forgot-verification-input" placeholder="-" required>
+                        <input type="text" maxlength="1" class="forgot-verification-input" placeholder="-" required>
+                        <input type="text" maxlength="1" class="forgot-verification-input" placeholder="-" required>
+                        <input type="text" maxlength="1" class="forgot-verification-input" placeholder="-" required>
+                        <button type="button" id="send-forgot-code-btn" class="form-button" style="padding: 0 15px; min-width: 120px;">发送验证码</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="new-password">新密码</label>
+                    <input type="password" id="new-password" class="form-input" placeholder="请设置6-20位新密码" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="confirm-new-password">确认新密码</label>
+                    <input type="password" id="confirm-new-password" class="form-input" placeholder="请再次输入新密码" required>
+                </div>
+                <button class="form-button" type="submit">重置密码</button>
+                <p class="register-link">
+                    想起密码了？<a href="#" id="switch-to-login-from-forgot">返回登录</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+            // 日志显示功能 - 只在控制台打印，不在页面上显示
+            function addLog(message, type) {
+                // 在控制台输出，添加颜色标记以区分类型
+                let prefix = '[AUTH LOG]';
+                if (type === 'error') {
+                    console.error(prefix + ' [ERROR] ' + message);
+                } else if (type === 'success') {
+                    console.log(prefix + ' [SUCCESS] ' + message);
+                } else {
+                    console.log(prefix + ' [INFO] ' + message);
+                }
+            }
+            
+            // 全局测试函数
+            window.testAuthPage = function() {
+                addLog('认证页面脚本执行正常！', 'success');
+                return true;
+            };
+            
+            document.addEventListener('DOMContentLoaded', function() {
+                addLog('DOM加载完成，开始初始化表单', 'info');
+                
+                // 获取表单元素
+                const registerForm = document.getElementById('register');
+                const loginForm = document.getElementById('login');
+                const forgotPasswordForm = document.getElementById('forgot-password');
+                const tabButtons = document.querySelectorAll('.tab-button');
+                const formContainers = document.querySelectorAll('.form-container');
+                
+                addLog('表单元素获取完成', 'info');
+                addLog('注册表单存在: ' + (registerForm ? '是' : '否'), 'info');
+                
+                // 标签切换功能
+                function switchTab(tabId) {
+                    addLog('切换到标签: ' + tabId, 'info');
+                    
+                    // 更新按钮样式
+                    tabButtons.forEach(button => {
+                        button.classList.remove('active');
+                        if (button.id === tabId + '-tab') {
+                            button.classList.add('active');
+                        }
+                    });
+                    
+                    // 显示对应表单和品牌特性
+                formContainers.forEach(container => {
+                    container.classList.remove('active');
+                    if (container.id === tabId) {
+                        container.classList.add('active');
+                        addLog(tabId + ' 表单已激活', 'info');
+                    }
+                });
+                
+                // 根据当前选项卡显示或隐藏品牌特性
+                const loginFeatures = document.getElementById('login-features');
+                const forgotPasswordFeatures = document.getElementById('forgot-password-features');
+                
+                if (loginFeatures && forgotPasswordFeatures) {
+                    if (tabId === 'login') {
+                        loginFeatures.style.display = 'block';
+                        forgotPasswordFeatures.style.display = 'none';
+                    } else if (tabId === 'forgot-password') {
+                        loginFeatures.style.display = 'none';
+                        forgotPasswordFeatures.style.display = 'block';
+                    } else {
+                        loginFeatures.style.display = 'none';
+                        forgotPasswordFeatures.style.display = 'none';
+                    }
+                }
+                }
+                
+                // 为标签按钮添加点击事件
+                tabButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const tabId = this.id.replace('-tab', '');
+                        switchTab(tabId);
+                    });
+                });
+                
+                // 主要的注册功能实现
+                function initRegisterForm() {
+                    // 在函数内部重新获取按钮元素
+                    const registerSubmitBtn = document.getElementById('register-submit-btn');
+                    if (!registerForm || !registerSubmitBtn) {
+                        addLog('注册表单或按钮不存在，无法初始化', 'error');
+                        return;
+                    }
+                    
+                    addLog('开始初始化注册表单处理逻辑', 'info');
+                    
+                    // 移除所有可能存在的事件监听器
+                    const newBtn = registerSubmitBtn.cloneNode(true);
+                    registerSubmitBtn.parentNode.replaceChild(newBtn, registerSubmitBtn);
+                    
+                    // 添加新的点击事件监听器
+                    newBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        addLog('注册按钮被点击！', 'success');
+                        
+                        // 获取表单数据
+                        const email = document.getElementById('register-email').value;
+                        const username = document.getElementById('register-username').value;
+                        const password = document.getElementById('register-password').value;
+                        const confirmPassword = document.getElementById('register-confirm').value;
+                        const agreeTerms = document.getElementById('agree-terms').checked;
+                        
+                        // 获取6位验证码
+                        let verificationCode = '';
+                        const verificationInputs = document.querySelectorAll('.verification-input');
+                        verificationInputs.forEach(input => {
+                            verificationCode += input.value;
+                        });
+                        
+                        addLog('表单数据获取完成', 'info');
+                        addLog('邮箱: ' + email, 'info');
+                        addLog('用户名: ' + username, 'info');
+                        addLog('验证码长度: ' + verificationCode.length, 'info');
+                        
+                        // 前端验证
+                        if (!email) {
+                            addLog('请输入电子邮箱', 'error');
+                            alert('请输入电子邮箱');
+                            return;
+                        }
+                        
+                        if (!username) {
+                            addLog('请输入用户名', 'error');
+                            alert('请输入用户名');
+                            return;
+                        }
+                        
+                        if (verificationCode.length !== 6) {
+                            addLog('请输入完整的6位验证码', 'error');
+                            alert('请输入完整的6位验证码');
+                            return;
+                        }
+                        
+                        if (password !== confirmPassword) {
+                            addLog('两次输入的密码不一致', 'error');
+                            alert('两次输入的密码不一致');
+                            return;
+                        }
+                        
+                        if (!agreeTerms) {
+                            addLog('请阅读并同意服务条款和隐私政策', 'error');
+                            alert('请阅读并同意服务条款和隐私政策');
+                            return;
+                        }
+                        
+                        addLog('前端验证通过，准备提交注册信息', 'success');
+                        
+                        // 实际API请求
+                        const baseUrl = 'http://43.134.114.73:8000';
+                        
+                        addLog('开始提交注册请求到verify-email-code接口', 'info');
+                        
+                        // 直接向verify-email-code接口提交所有注册参数
+                        fetch(`${baseUrl}/api/auth/verify-email-code`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                email,
+                                code: verificationCode,
+                                code_type: 'register',
+                                username,
+                                password
+                            })
+                        })
+                        .then(response => {
+                            addLog('注册请求响应状态: ' + response.status, 'info');
+                            if (!response.ok) {
+                                throw new Error('注册失败');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            addLog('注册成功！', 'success');
+                            addLog('注册结果数据: ' + JSON.stringify(data), 'info');
+                            
+                            if (data.token) {
+                                // 保存token到localStorage
+                                localStorage.setItem('userToken', data.token);
+                                alert('注册成功！');
+                                // 跳转到首页
+                                window.location.href = 'index.html';
+                            } else {
+                                alert('注册成功，请登录');
+                                switchTab('login');
+                            }
+                        })
+                        .catch(error => {
+                            addLog('注册过程中出错: ' + error.message, 'error');
+                            alert('注册失败，请稍后重试');
+                        });
+                    });
+                    
+                    addLog('注册按钮点击事件监听器添加成功', 'success');
+                }
+                
+                // 初始化注册表单
+                initRegisterForm();
+                
+                // 其他表单的逻辑保持不变...
+            const switchToRegister = document.getElementById('switch-to-register');
+            const switchToLogin = document.getElementById('switch-to-login');
+            const switchToLoginFromForgot = document.getElementById('switch-to-login-from-forgot');
+            const forgotPasswordLink = document.querySelector('.forgot-password');
+            const sendCodeBtn = document.getElementById('send-code-btn');
+            const sendForgotCodeBtn = document.getElementById('send-forgot-code-btn');
+            
+            console.log('DOM加载完成，表单元素获取结果:');
+            console.log('registerForm:', registerForm);
+            console.log('loginForm:', loginForm);
+            
+            // 切换标签页
+            function switchTab(tabId) {
+                // 隐藏所有表单
+                formContainers.forEach(container => {
+                    container.classList.remove('active');
+                });
+                // 移除所有按钮的激活状态
+                tabButtons.forEach(button => {
+                    button.classList.remove('active');
+                });
+                // 显示选中的表单
+                document.getElementById(tabId).classList.add('active');
+                // 激活选中的按钮
+                document.querySelector(`.tab-button[data-tab="${tabId}"]`).classList.add('active');
+            }
+            
+            // 标签按钮点击事件
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    switchTab(tabId);
+                    
+                    // 检查如果切换到注册标签，输出表单状态
+                    if (tabId === 'register' && registerForm) {
+                        console.log('切换到注册标签，表单状态检查:');
+                        console.log('注册表单是否可见:', registerForm.classList.contains('active'));
+                        console.log('注册表单事件监听器数量:', getEventListeners(registerForm).submit?.length || 0);
+                    }
+                });
+            });
+            
+            // 切换到注册表单
+            if (switchToRegister) {
+                switchToRegister.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    switchTab('register');
+                });
+            }
+            
+            // 切换到登录表单
+            if (switchToLogin) {
+                switchToLogin.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    switchTab('login');
+                });
+            }
+            
+            // 从忘记密码切换到登录表单
+            if (switchToLoginFromForgot) {
+                switchToLoginFromForgot.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    switchTab('login');
+                });
+            }
+            
+            // 忘记密码链接点击事件
+            if (forgotPasswordLink) {
+                forgotPasswordLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    switchTab('forgot-password');
+                });
+            }
+            
+            // 添加注册按钮的直接点击事件监听器
+            const registerSubmitBtn = document.getElementById('register-submit-btn');
+            if (registerSubmitBtn) {
+                console.log('找到注册按钮，添加直接点击事件监听器');
+                registerSubmitBtn.addEventListener('click', function(e) {
+                    console.log('注册按钮直接点击事件触发');
+                    // 手动触发表单提交逻辑
+                    if (registerForm) {
+                        console.log('手动触发表单提交前的验证');
+                        const email = document.getElementById('register-email').value;
+                        const username = document.getElementById('register-username').value;
+                        const password = document.getElementById('register-password').value;
+                        const confirmPassword = document.getElementById('register-confirm').value;
+                        const agreeTerms = document.getElementById('agree-terms').checked;
+                        
+                        // 获取6位验证码
+                        let verificationCode = '';
+                        const verificationInputs = document.querySelectorAll('.verification-input');
+                        verificationInputs.forEach(input => {
+                            verificationCode += input.value;
+                        });
+                        
+                        // 简单的前端验证
+                        if (!email) {
+                            alert('请输入电子邮箱');
+                            return;
+                        }
+                        
+                        if (!username) {
+                            alert('请输入用户名');
+                            return;
+                        }
+                        
+                        if (verificationCode.length !== 6) {
+                            alert('请输入完整的6位验证码');
+                            return;
+                        }
+                        
+                        if (password !== confirmPassword) {
+                            alert('两次输入的密码不一致');
+                            return;
+                        }
+                        
+                        if (!agreeTerms) {
+                            alert('请阅读并同意服务条款和隐私政策');
+                            return;
+                        }
+                        
+                        console.log('验证通过，准备提交注册信息');
+                        // 阻止按钮默认行为，防止触发表单的submit事件
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        // 实际API请求
+                        const baseUrl = 'http://43.134.114.73:8000';
+                        
+                        // 先验证验证码
+                        fetch(`${baseUrl}/api/auth/verify-email-code`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ 
+                                email, 
+                                code: verificationCode, 
+                                code_type: 'register' 
+                            })
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('验证码验证失败');
+                            }
+                            return response.json();
+                        })
+                        .then(() => {
+                            // 验证码验证成功后，再调用注册接口
+                            return fetch(`${baseUrl}/api/auth/register`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ 
+                                    username, 
+                                    password 
+                                })
+                            });
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('注册失败');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log('注册成功:', data);
+                            
+                            if (data.token) {
+                                // 保存token到localStorage
+                                localStorage.setItem('userToken', data.token);
+                                alert('注册成功！');
+                                // 跳转到首页
+                                window.location.href = 'index.html';
+                            } else {
+                                alert('注册成功，请登录');
+                                switchTab('login');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('注册过程中出错:', error);
+                            
+                            if (error.message === '验证码验证失败') {
+                                alert('验证码不正确，请重新输入');
+                            } else {
+                                alert('注册失败，请稍后重试');
+                            }
+                        });
+                    }
+                });
+            } else {
+                console.error('未找到注册按钮');
+            }
+            const style = document.createElement('style');
+            style.textContent = `
+                .verification-input, .forgot-verification-input {
+                    width: 50px;
+                    height: 50px;
+                    text-align: center;
+                    font-size: 24px;
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    transition: border-color 0.3s, box-shadow 0.3s;
+                }
+                .verification-input:focus, .forgot-verification-input:focus {
+                    outline: none;
+                    border-color: #000;
+                    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+                }
+                .form-container {
+                    display: none;
+                }
+                .form-container.active {
+                    display: block;
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // 验证码输入框自动跳转逻辑
+            function setupVerificationInputs(inputsSelector) {
+                const inputs = document.querySelectorAll(inputsSelector);
+                if (inputs.length === 0) return;
+                
+                inputs.forEach((input, index) => {
+                    // 限制只能输入数字
+                    input.addEventListener('input', function(e) {
+                        this.value = this.value.replace(/[^0-9]/g, '');
+                        if (this.value) {
+                            // 如果当前不是最后一个输入框，则焦点自动移到下一个
+                            if (index < inputs.length - 1) {
+                                inputs[index + 1].focus();
+                            }
+                        }
+                    });
+                    
+                    // 处理删除键
+                    input.addEventListener('keydown', function(e) {
+                        if (e.key === 'Backspace' && !this.value) {
+                            // 如果当前是第一个输入框，保持焦点
+                            // 否则焦点移到前一个输入框
+                            if (index > 0) {
+                                inputs[index - 1].focus();
+                            }
+                        }
+                    });
+                });
+            }
+            
+            // 设置注册表单的验证码输入框
+            setupVerificationInputs('.verification-input');
+            
+            // 设置忘记密码表单的验证码输入框
+            setupVerificationInputs('.forgot-verification-input');
+            
+            // 获取登录按钮并添加点击事件监听器
+            const loginButton = document.querySelector('#login .form-button[type="submit"]');
+            if (loginButton) {
+                console.log('找到登录按钮，添加点击事件监听器');
+                loginButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // 这里添加登录逻辑
+                    const username = document.getElementById('login-username').value;
+                    const password = document.getElementById('login-password').value;
+                    const rememberMe = document.getElementById('remember-me').checked;
+                    
+                    console.log('登录信息:', { username, password, rememberMe });
+                    
+                    // 实际API请求
+                    const baseUrl = 'http://43.134.114.73:8000'; // 指定后端服务器地址
+                    
+                    // 模拟登录 - 用于测试（实际环境中应使用真实API请求）
+                    // 检查是否是测试用户
+                    if (username === 'test' && password === 'test') {
+                        // 模拟成功响应
+                        const mockData = {
+                            access_token: 'mock_jwt_token',
+                            token_type: 'Bearer',
+                            user_id: 'test_user_123',
+                            username: '测试用户'
+                        };
+                        
+                        // 保存token和其他数据到localStorage
+                        localStorage.setItem('access_token', mockData.access_token);
+                        localStorage.setItem('token_type', mockData.token_type);
+                        localStorage.setItem('user_id', mockData.user_id);
+                        localStorage.setItem('username', mockData.username);
+                        
+                        if (rememberMe) {
+                            // 如果勾选了记住我，保存用户名
+                            localStorage.setItem('rememberedUser', username);
+                        }
+                        
+                        console.log('模拟登录成功，已保存数据:', mockData);
+                        
+                        // 直接跳转到首页，让navbar显示用户信息
+                        window.location.href = 'index.html';
+                    } else {
+                        // 实际API请求
+                        fetch(`${baseUrl}/api/auth/login`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            // 移除credentials: 'include'以解决CORS问题
+                            body: JSON.stringify({ username, password })
+                        })
+                        .then(response => {
+                            console.log('登录响应状态码:', response.status);
+                            console.log('登录响应头部:', response.headers);
+                            if (!response.ok) {
+                                throw new Error(`登录失败: HTTP ${response.status} - ${response.statusText}`);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log('登录成功响应数据:', data);
+                            
+                            // 保存session_id和用户信息
+                            if (data.session_id) {
+                                localStorage.setItem('session_id', data.session_id);
+                                // 保存session创建时间戳，用于30分钟过期检查
+                                localStorage.setItem('session_timestamp', Date.now().toString());
+                                console.log('session_id已保存到localStorage:', data.session_id);
+                            } else {
+                                console.error('登录响应中未包含session_id');
+                                // 为了测试目的，如果没有返回session_id，生成一个临时的
+                                const tempSessionId = 'temp_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                                localStorage.setItem('session_id', tempSessionId);
+                                console.log('使用临时session_id:', tempSessionId);
+                            }
+                            
+                            // 保存用户信息用于前端显示
+                            if (data.user_id) {
+                                localStorage.setItem('user_id', data.user_id);
+                            }
+                            if (data.username) {
+                                localStorage.setItem('username', data.username);
+                            }
+                            if (data.email) {
+                                localStorage.setItem('email', data.email);
+                            }
+                                
+                            if (rememberMe) {
+                                // 如果勾选了记住我，保存用户名
+                                localStorage.setItem('rememberedUser', username);
+                            } else {
+                                localStorage.removeItem('rememberedUser');
+                            }
+                                
+                            console.log('登录成功，已保存session和用户信息:', {
+                                session_id: localStorage.getItem('session_id'),
+                                user_id: localStorage.getItem('user_id'),
+                                username: localStorage.getItem('username'),
+                                email: localStorage.getItem('email')
+                            });
+                                
+                            // 直接跳转到首页
+                            window.location.href = 'index.html';
+                        })
+                        .catch(error => {
+                            console.error('登录失败:', error);
+                            alert('登录失败：' + error.message);
+                        });
+                    }
+                });
+            } else {
+                console.error('未找到登录按钮');
+            }
+                
+                // 发送验证码函数
+                function sendVerificationCode(email, button, codeType) {
+                    if (!email) {
+                        alert('请先输入电子邮箱');
+                        return Promise.reject('请先输入电子邮箱');
+                    }
+                    
+                    // 简单的邮箱格式验证
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(email)) {
+                        alert('请输入有效的电子邮箱地址');
+                        return Promise.reject('请输入有效的电子邮箱地址');
+                    }
+                    
+                    // 发送验证码前禁用按钮
+                    button.disabled = true;
+                    
+                    // 实际API请求
+                    const baseUrl = 'http://43.134.114.73:8000'; // 指定后端服务器地址
+                    
+                    // 实际API请求代码
+                    // 确保JSON格式完全正确
+                    const requestBody = JSON.stringify({"email": String(email),"code_type": String(codeType)});
+                    console.log(`发送${codeType === 'register' ? '注册' : '忘记密码'}验证码请求`, requestBody);
+                    
+                    // 发送POST请求到后端
+                    console.log('准备发送请求到:', `${baseUrl}/api/auth/send-verification-code`);
+                    console.log('请求头:', { 'Content-Type': 'application/json' });
+                    console.log('请求体:', requestBody);
+                    
+                    // 尝试添加额外的CORS相关配置
+                    const headers = new Headers();
+                    headers.append('Content-Type', 'application/json');
+                    headers.append('Accept', '*/*');
+                    headers.append('Cache-Control', 'no-cache');
+                    headers.append('Origin', window.location.origin);
+                    
+                    return fetch(`${baseUrl}/api/auth/send-verification-code`, {
+                        method: 'POST',
+                        headers: headers,
+                        mode: 'cors',
+                        credentials: 'omit',
+                        cache: 'no-cache',
+                        redirect: 'follow',
+                        referrerPolicy: 'no-referrer',
+                        body: requestBody
+                    })
+                    .then(response => {
+                        console.log('响应状态码:', response.status);
+                        console.log('响应头:', Object.fromEntries(response.headers.entries()));
+                        
+                        if (!response.ok) {
+                            // 处理HTTP错误
+                            if (response.status === 409) {
+                                // 账户已注册的情况
+                                throw new Error('账户已注册');
+                            }
+                            throw new Error(`发送验证码失败: HTTP ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .catch(error => {
+                        console.error('请求错误详细信息:', error);
+                        throw error;
+                    });
+                }
+                
+                // 倒计时函数
+                function startCountdown(button) {
+                    let countdown = 60;
+                    button.innerText = `${countdown}秒后重新发送`;
+                    
+                    const timer = setInterval(() => {
+                        countdown--;
+                        button.innerText = `${countdown}秒后重新发送`;
+                        
+                        if (countdown <= 0) {
+                            clearInterval(timer);
+                            button.innerText = '发送验证码';
+                            button.disabled = false;
+                        }
+                    }, 1000);
+                }
+                
+                // 注册表单发送验证码按钮点击事件
+                if (sendCodeBtn) {
+                    sendCodeBtn.addEventListener('click', function() {
+                        const email = document.getElementById('register-email').value;
+                        
+                        sendVerificationCode(email, this, 'register')
+                            .then(data => {
+                                console.log('注册验证码发送成功:', data);
+                                alert('验证码已发送，请查收邮件');
+                                
+                                // 启动倒计时
+                                startCountdown(this);
+                            })
+                            .catch(error => {
+                                console.error('发送注册验证码失败:', error);
+                                if (error.message === '账户已注册') {
+                                    alert('该邮箱或用户名已注册，请直接登录或使用其他邮箱');
+                                } else {
+                                    alert('发送验证码失败，请稍后重试');
+                                }
+                                this.disabled = false;
+                            });
+                    });
+                }
+                
+                // 忘记密码表单发送验证码按钮点击事件
+                if (sendForgotCodeBtn) {
+                    sendForgotCodeBtn.addEventListener('click', function() {
+                        const email = document.getElementById('forgot-email').value;
+                        
+                        sendVerificationCode(email, this, 'forgot')
+                            .then(data => {
+                                console.log('忘记密码验证码发送成功:', data);
+                                alert('验证码已发送，请查收邮件');
+                                
+                                // 启动倒计时
+                                startCountdown(this);
+                            })
+                            .catch(error => {
+                                console.error('发送忘记密码验证码失败:', error);
+                                alert('发送验证码失败，请稍后重试');
+                                this.disabled = false;
+                            });
+                    });
+                }
+                
+                // 注册表单提交处理
+                if (registerForm) {
+                    console.log('注册表单存在，正在添加事件监听器');
+                    console.log('注册表单可见性:', registerForm.classList.contains('active'));
+                    console.log('注册表单是否被禁用:', registerForm.disabled);
+                    
+                    registerForm.addEventListener('submit', function(e) {
+                        console.log('注册表单提交事件触发');
+                        e.preventDefault();
+                        // 这里添加注册逻辑
+                        const email = document.getElementById('register-email').value;
+                        const username = document.getElementById('register-username').value;
+                        const password = document.getElementById('register-password').value;
+                        const confirmPassword = document.getElementById('register-confirm').value;
+                        const agreeTerms = document.getElementById('agree-terms').checked;
+                        
+                        // 获取6位验证码
+                        let verificationCode = '';
+                        const verificationInputs = document.querySelectorAll('.verification-input');
+                        verificationInputs.forEach(input => {
+                            verificationCode += input.value;
+                        });
+                        
+                        // 简单的前端验证
+                        if (!email) {
+                            alert('请输入电子邮箱');
+                            return;
+                        }
+                        
+                        if (!username) {
+                            alert('请输入用户名');
+                            return;
+                        }
+                        
+                        if (verificationCode.length !== 6) {
+                            alert('请输入完整的6位验证码');
+                            return;
+                        }
+                        
+                        if (password !== confirmPassword) {
+                            alert('两次输入的密码不一致');
+                            return;
+                        }
+                        
+                        if (!agreeTerms) {
+                            alert('请阅读并同意服务条款和隐私政策');
+                            return;
+                        }
+                        
+                        console.log('注册信息:', { email, username, password });
+                        
+                        // 实际API请求
+                        const baseUrl = 'http://43.134.114.73:8000'; // 指定后端服务器地址
+                        
+                        // 先验证验证码
+                        fetch(`${baseUrl}/api/auth/verify-email-code`, {
+                            method: 'POST',
+                            credentials: 'include',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ 
+                                email, 
+                                code: verificationCode, 
+                                code_type: 'register' 
+                            })
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('验证码验证失败');
+                            }
+                            return response.json();
+                        })
+                        .then(() => {
+                            // 验证码验证成功后，再调用注册接口
+                            return fetch(`${baseUrl}/api/auth/register`, {
+                                method: 'POST',
+                                credentials: 'include',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ 
+                                    username, 
+                                    password, 
+                                    email, 
+                                    code: verificationCode
+                                })
+                            });
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('注册失败');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log('注册成功:', data);
+                            
+                            // 保存用户信息到localStorage
+                            if (data.user_id && data.username) {
+                                localStorage.setItem('user_id', data.user_id);
+                                localStorage.setItem('username', data.username);
+                            }
+                            
+                            alert('注册成功！');
+                            // 跳转到首页
+                            window.location.href = 'index.html';
+                        })
+                        .catch(error => {
+                            console.error('注册过程中出错:', error);
+                            
+                            if (error.message === '验证码验证失败') {
+                                alert('验证码不正确，请重新输入');
+                            } else {
+                                alert('注册失败，请稍后重试');
+                            }
+                        });
+                    });
+                }
+                
+                // 忘记密码表单提交处理
+                if (forgotPasswordForm) {
+                    forgotPasswordForm.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        // 这里添加忘记密码逻辑
+                        const email = document.getElementById('forgot-email').value;
+                        const newPassword = document.getElementById('new-password').value;
+                        const confirmNewPassword = document.getElementById('confirm-new-password').value;
+                        
+                        // 获取6位验证码
+                        let verificationCode = '';
+                        const verificationInputs = document.querySelectorAll('.forgot-verification-input');
+                        verificationInputs.forEach(input => {
+                            verificationCode += input.value;
+                        });
+                        
+                        // 简单的前端验证
+                        if (!email) {
+                            alert('请输入电子邮箱');
+                            return;
+                        }
+                        
+                        if (verificationCode.length !== 6) {
+                            alert('请输入完整的6位验证码');
+                            return;
+                        }
+                        
+                        if (!newPassword) {
+                            alert('请设置新密码');
+                            return;
+                        }
+                        
+                        if (newPassword.length < 6 || newPassword.length > 20) {
+                            alert('密码长度应为6-20位');
+                            return;
+                        }
+                        
+                        if (newPassword !== confirmNewPassword) {
+                            alert('两次输入的密码不一致');
+                            return;
+                        }
+                        
+                        console.log('重置密码信息:', { email, newPassword, verificationCode });
+                        
+                        // 实际API请求
+                        const baseUrl = 'http://43.134.114.73:8000'; // 指定后端服务器地址
+                        
+                        fetch(`${baseUrl}/api/auth/reset-password`, {
+                            method: 'POST',
+                            credentials: 'include',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ 
+                                email, 
+                                new_password: newPassword, 
+                                verification_code: verificationCode 
+                            })
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('重置密码失败');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log('重置密码成功:', data);
+                            alert('密码重置成功，请使用新密码登录');
+                            switchTab('login');
+                        })
+                        .catch(error => {
+                            console.error('重置密码失败:', error);
+                            alert('重置密码失败，请稍后重试');
+                        });
+                    });
+                }
+            });
+    </script>
+</body>
+</html>

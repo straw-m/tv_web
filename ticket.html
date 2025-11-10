@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工单支持 - TV CONNECT</title>
+    <!-- 设置网站图标为圆形 -->
+    <link rel="icon" type="image/png" href="picture/通用资源/logo_url.png">
+    <link rel="shortcut icon" type="image/png" href="picture/通用资源/logo_url.png">
+    <!-- 确保在支持的浏览器中显示为圆形 -->
+    <link rel="mask-icon" href="picture/通用资源/logo_url.png" color="#5bbad5">
+    <!-- 移动设备图标 -->
+    <link rel="apple-touch-icon-precomposed" href="picture/通用资源/logo_url.png" />
+    <!-- 引入公共样式 -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- 引入激活码弹窗组件 -->
+    <script type="module">
+        import { activationModal } from './components/activation-modal.js';
+        window.activationModal = activationModal;
+    </script>
+    
+    <!-- 兼容不支持ES模块的浏览器 -->
+    <script nomodule defer src="./components/activation-modal.js"></script>
+    
+    <link rel="stylesheet" href="app/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="app/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="app/dist/app.css" />
+    <link rel="stylesheet" href="assets/font/font-awesome.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* 页面标题部分样式 */
+        .page-title {
+            background: #333;
+            color: white;
+            padding: 60px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .page-title .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+        }
+        
+        .page-title .container {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .content-box {
+            text-align: center;
+        }
+        
+        .content-box h1 {
+            font-size: 36px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .content-box p {
+            font-size: 16px;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        /* 工单支持页面主体样式 */
+        .ticket-support-section {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .ticket-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+
+        /* 左侧菜单 */
+        .ticket-sidebar {
+            flex: 1;
+            min-width: 280px;
+            background: #f8f8f8;
+            border-radius: 8px;
+            padding: 30px;
+        }
+
+        .sidebar-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-item {
+            margin-bottom: 10px;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s;
+        }
+
+        .sidebar-link:hover {
+            background: #e0e0e0;
+        }
+
+        .sidebar-link.active {
+            background: #333;
+            color: white;
+        }
+
+        .sidebar-icon {
+            margin-right: 12px;
+            width: 20px;
+            height: 20px;
+        }
+
+        /* 右侧主内容 */
+        .ticket-content {
+            flex: 2;
+            min-width: 600px;
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .content-header h2 {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        /* 工单列表 */
+        .ticket-list {
+            margin-bottom: 40px;
+        }
+
+        .ticket-item {
+            background: #f8f8f8;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .ticket-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .ticket-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .ticket-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .ticket-status {
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .status-open {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .status-pending {
+            background: #e6f7ff;
+            color: #1890ff;
+        }
+
+        .status-resolved {
+            background: #f6ffed;
+            color: #52c41a;
+        }
+
+        .status-closed {
+            background: #fff2e8;
+            color: #fa8c16;
+        }
+
+        .ticket-info {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .ticket-preview {
+            margin-bottom: 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .ticket-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 14px;
+        }
+
+        /* 新建工单表单 */
+        .create-ticket-form {
+            background: #f8f8f8;
+            border-radius: 8px;
+            padding: 30px;
+        }
+
+        .form-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #333;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .form-submit {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+
+        /* 附件上传 */
+        .upload-area {
+            border: 2px dashed #ddd;
+            border-radius: 4px;
+            padding: 20px;
+            text-align: center;
+            transition: border-color 0.3s;
+        }
+
+        .upload-area:hover {
+            border-color: #333;
+        }
+
+        .upload-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #999;
+        }
+
+        .upload-text {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .upload-text span {
+            color: #333;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        /* 常见问题 */
+        .faq-section {
+            padding: 60px 0;
+            background: #f5f5f5;
+        }
+
+        .faq-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .faq-title {
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 40px;
+        }
+
+        .faq-item {
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .faq-question:hover {
+            background: #f8f8f8;
+        }
+
+        .faq-question h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .faq-icon {
+            transition: transform 0.3s;
+        }
+
+        .faq-answer {
+            padding: 0 20px 20px;
+            display: none;
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        /* 页脚 */
+        .footer {
+            background: #333;
+            color: white;
+            padding: 60px 0 30px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-top {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .footer-logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .footer-description {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            opacity: 0.8;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+        .social-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .footer-heading {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+        }
+
+        .footer-bottom {
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            opacity: 0.8;
+            font-size: 14px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .ticket-container {
+                flex-direction: column;
+            }
+            
+            .ticket-content {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-nav {
+                padding: 15px 20px;
+            }
+            
+            .header-left {
+                gap: 20px;
+            }
+            
+            .nav-links {
+                gap: 15px;
+            }
+            
+            .ticket-sidebar,
+            .ticket-content {
+                min-width: 100%;
+            }
+            
+            .content-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 统一导航栏容器 -->
+    <div id="navbar-container"></div>
+    
+
+
+    <!-- 页面标题部分 -->
+    <section class="page-title">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="content-box">
+                <h1>工单支持</h1>
+                <p>我们的客服团队将竭诚为您解决任何问题，请提交工单或查看已有工单的处理进度</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 工单支持主体部分 -->
+    <section class="ticket-support-section">
+        <div class="ticket-container">
+            <!-- 左侧菜单 -->
+            <div class="ticket-sidebar">
+                <h3 class="sidebar-title">工单中心</h3>
+                <ul class="sidebar-menu">
+                    <li class="sidebar-item">
+                        <a href="#my-tickets" class="sidebar-link active">
+                            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8 9L12 13L16 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M3 19H21V5C21 3.89543 20.1046 3 19 3H5C3.89543 3 3 3.89543 3 5V19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            我的工单
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#create-ticket" class="sidebar-link">
+                            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 5V19M19 12H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            新建工单
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#closed-tickets" class="sidebar-link">
+                            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5 13L12 19L19 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M5 19H19C20.1046 19 21 18.1046 21 17V7C21 5.89543 20.1046 5 19 5H5C3.89543 5 3 5.89543 3 7V17C3 18.1046 3.89543 19 5 19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            已关闭工单
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#faq" class="sidebar-link">
+                            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 16C12.5523 16 13 15.5523 13 15C13 14.4477 12.5523 14 12 14C11.4477 14 11 14.4477 11 15C11 15.5523 11.4477 16 12 16Z" fill="currentColor"/>
+                                <path d="M12 8C12.5523 8 13 7.55228 13 7C13 6.44772 12.5523 6 12 6C11.4477 6 11 6.44772 11 7C11 7.55228 11.4477 8 12 8Z" fill="currentColor"/>
+                                <path d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            常见问题
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#contact-info" class="sidebar-link">
+                            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22 16.92V17C22 18.6569 20.6569 20 19 20H5C3.34315 20 2 18.6569 2 17V16.92C2 16.5636 2.08507 16.215 2.246 15.903L8 10L12 13L15.903 9.097C16.215 8.78507 16.5636 8 16.92 8H17C18.6569 8 20 6.65685 20 5V4.92C20 4.56363 20.0851 4.21507 20.246 3.903L21.903 2.246C22.215 2.08507 22.5636 2 22.92 2H23C23.5523 2 24 2.44772 24 3C24 3.44473 23.7893 3.84784 23.4142 4.12132L21.8787 5.65685C22.1522 5.93191 22.3607 6.33503 22.3607 6.78039C22.3607 7.22575 22.1522 7.62887 21.8787 7.90393L20.246 9.43934C20.0851 9.7513 20 10.1 20 10.456V10.543C19.6148 10.916 19.3631 11.4396 19.3044 12L14 17.2956C13.5604 17.3631 13.0379 17.6148 12.665 18V21C12.665 21.2761 12.4911 21.5 12.215 21.5C11.9389 21.5 11.765 21.2761 11.765 21V18C11.392 17.6148 10.8695 17.3631 10.43 17.2956L5 12C4.94134 11.4396 4.68966 10.916 4.30444 10.543V10.456C4.24577 10.1 4.16083 9.7513 4.00001 9.43934L2.36359 7.90393C2.08953 7.62887 1.88101 7.22575 1.88101 6.78039C1.88101 6.33503 2.08953 5.93191 2.36359 5.65685L3.90393 4.12132C4.17899 3.84784 4.38751 3.44473 4.38751 3C4.38751 2.44772 4.84 2 5.39251 2H5.45601C5.81238 2 6.16095 2.08507 6.47292 2.246L8.13 3.903C8.44197 4.21507 8.526 4.56363 8.526 4.92V5C8.526 6.65685 9.87 8 11.526 8H11.608C11.981 8.38523 12.5045 8.63686 13 8.70557L18.2944 14C18.3631 14.4396 18.6148 14.9621 19 15.335V18C19 18.2761 19.1739 18.5 19.45 18.5C19.7261 18.5 19.9 18.2761 19.9 18V15.335C20.273 14.9621 20.5247 14.4396 20.5933 14L21.8787 12.7143C22.1522 12.4402 22.3607 12.0371 22.3607 11.5918C22.3607 11.1464 22.1522 10.7433 21.8787 10.4682L20.5933 9.18279C20.5247 8.74322 20.273 8.22065 19.9 7.84772V5C19.9 4.72386 19.7261 4.5 19.45 4.5C19.1739 4.5 19 4.72386 19 5V7.84772C18.627 8.22065 18.1044 8.47232 17.6648 8.54102L12 9.80399" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            联系我们
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 右侧内容 -->
+            <div class="ticket-content">
+                <!-- 我的工单 -->
+                <div id="my-tickets">
+                    <div class="content-header">
+                        <h2>我的工单</h2>
+                        <a href="#create-ticket" class="btn">新建工单</a>
+                    </div>
+
+                    <div class="ticket-list">
+                        <!-- 工单项1 -->
+                        <div class="ticket-item">
+                            <div class="ticket-header">
+                                <div class="ticket-title">交易异常问题</div>
+                                <span class="ticket-status status-pending">处理中</span>
+                            </div>
+                            <div class="ticket-info">
+                                <span>工单编号: TC-20230615-001</span>
+                                <span>提交时间: 2023-06-15 14:30</span>
+                                <span>最后更新: 2023-06-15 16:45</span>
+                            </div>
+                            <div class="ticket-preview">
+                                我在今天下午进行比特币交易时遇到了问题，交易状态显示异常，资金没有到账，请帮助我解决这个问题。...
+                            </div>
+                            <div class="ticket-actions">
+                                <a href="#" class="btn btn-sm">查看详情</a>
+                                <a href="#" class="btn btn-sm btn-outline">回复</a>
+                            </div>
+                        </div>
+
+                        <!-- 工单项2 -->
+                        <div class="ticket-item">
+                            <div class="ticket-header">
+                                <div class="ticket-title">账户安全验证</div>
+                                <span class="ticket-status status-resolved">已解决</span>
+                            </div>
+                            <div class="ticket-info">
+                                <span>工单编号: TC-20230610-003</span>
+                                <span>提交时间: 2023-06-10 09:15</span>
+                                <span>最后更新: 2023-06-10 11:30</span>
+                            </div>
+                            <div class="ticket-preview">
+                                我需要更换绑定的手机号码，但系统要求进行身份验证，请问需要提供哪些材料？...
+                            </div>
+                            <div class="ticket-actions">
+                                <a href="#" class="btn btn-sm">查看详情</a>
+                                <a href="#" class="btn btn-sm btn-outline">评价</a>
+                            </div>
+                        </div>
+
+                        <!-- 工单项3 -->
+                        <div class="ticket-item">
+                            <div class="ticket-header">
+                                <div class="ticket-title">提现手续费问题</div>
+                                <span class="ticket-status status-open">待处理</span>
+                            </div>
+                            <div class="ticket-info">
+                                <span>工单编号: TC-20230605-005</span>
+                                <span>提交时间: 2023-06-05 11:20</span>
+                                <span>最后更新: 2023-06-05 11:20</span>
+                            </div>
+                            <div class="ticket-preview">
+                                我发现最近的提现手续费有所调整，想了解具体的收费标准和调整原因。...
+                            </div>
+                            <div class="ticket-actions">
+                                <a href="#" class="btn btn-sm">查看详情</a>
+                                <a href="#" class="btn btn-sm btn-outline">编辑</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 新建工单表单 -->
+                <div id="create-ticket" style="display: none;">
+                    <div class="content-header">
+                        <h2>新建工单</h2>
+                        <a href="#my-tickets" class="btn btn-outline">返回工单列表</a>
+                    </div>
+
+                    <div class="create-ticket-form">
+                        <h3 class="form-title">提交问题</h3>
+                        
+                        <form id="ticket-form">
+                            <div class="form-group">
+                                <label class="form-label" for="ticket-type">问题类型</label>
+                                <select class="form-select" id="ticket-type" required>
+                                    <option value="">请选择问题类型</option>
+                                    <option value="account">账户问题</option>
+                                    <option value="trading">交易问题</option>
+                                    <option value="deposit-withdrawal">充值/提现</option>
+                                    <option value="security">安全问题</option>
+                                    <option value="robot">机器人问题</option>
+                                    <option value="other">其他问题</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="ticket-title">工单标题</label>
+                                <input type="text" class="form-input" id="ticket-title" placeholder="请输入问题标题" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="ticket-description">问题描述</label>
+                                <textarea class="form-textarea" id="ticket-description" placeholder="请详细描述您遇到的问题，以便我们更好地为您解决" required></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">上传附件（可选）</label>
+                                <div class="upload-area">
+                                    <div class="upload-icon">📎</div>
+                                    <div class="upload-text">点击或拖拽文件至此处上传<br><span>支持JPG、PNG、PDF格式，最大5MB</span></div>
+                                    <input type="file" id="ticket-attachment" style="display: none;">
+                                </div>
+                            </div>
+
+                            <div class="form-submit">
+                                <button type="button" class="btn btn-outline" onclick="location.href='#my-tickets'">取消</button>
+                                <button type="submit" class="btn">提交工单</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- 已关闭工单 -->
+                <div id="closed-tickets" style="display: none;">
+                    <div class="content-header">
+                        <h2>已关闭工单</h2>
+                        <a href="#my-tickets" class="btn btn-outline">返回工单列表</a>
+                    </div>
+
+                    <div class="ticket-list">
+                        <!-- 已关闭工单项1 -->
+                        <div class="ticket-item">
+                            <div class="ticket-header">
+                                <div class="ticket-title">忘记登录密码</div>
+                                <span class="ticket-status status-closed">已关闭</span>
+                            </div>
+                            <div class="ticket-info">
+                                <span>工单编号: TC-20230520-002</span>
+                                <span>提交时间: 2023-05-20 16:40</span>
+                                <span>关闭时间: 2023-05-21 10:15</span>
+                            </div>
+                            <div class="ticket-preview">
+                                我忘记了登录密码，尝试通过邮箱重置但没有收到邮件，请帮助我找回密码。...
+                            </div>
+                            <div class="ticket-actions">
+                                <a href="#" class="btn btn-sm">查看详情</a>
+                                <a href="#" class="btn btn-sm btn-outline">重新提交</a>
+                            </div>
+                        </div>
+
+                        <!-- 已关闭工单项2 -->
+                        <div class="ticket-item">
+                            <div class="ticket-header">
+                                <div class="ticket-title">API密钥配置</div>
+                                <span class="ticket-status status-closed">已关闭</span>
+                            </div>
+                            <div class="ticket-info">
+                                <span>工单编号: TC-20230515-008</span>
+                                <span>提交时间: 2023-05-15 10:30</span>
+                                <span>关闭时间: 2023-05-15 14:20</span>
+                            </div>
+                            <div class="ticket-preview">
+                                我在配置API密钥时遇到了问题，无法正常连接到交易机器人，请提供详细的配置步骤。...
+                            </div>
+                            <div class="ticket-actions">
+                                <a href="#" class="btn btn-sm">查看详情</a>
+                                <a href="#" class="btn btn-sm btn-outline">重新提交</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 常见问题部分 -->
+    <section id="faq" class="faq-section">
+        <div class="faq-container">
+            <h2 class="faq-title">常见问题</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>如何创建新工单？</h3>
+                    <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 5V19M19 12H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="faq-answer">
+                    <p>登录您的账户后，在工单支持页面点击"新建工单"按钮，选择问题类型，填写工单标题和详细描述，如有需要可上传相关附件，最后点击"提交工单"即可。</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>工单处理时间是多久？</h3>
+                    <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 5V19M19 12H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="faq-answer">
+                    <p>我们的客服团队会在24小时内响应您的工单。对于紧急问题，我们会优先处理，通常在1-2小时内给予回复。</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>如何查看工单处理进度？</h3>
+                    <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 5V19M19 12H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="faq-answer">
+                    <p>在"我的工单"页面，您可以看到所有工单的状态和最后更新时间。点击"查看详情"可以查看完整的工单内容和回复记录。</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>工单可以撤销或删除吗？</h3>
+                    <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 5V19M19 12H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="faq-answer">
+                    <p>在工单状态为"待处理"时，您可以选择编辑或撤销工单。一旦工单进入"处理中"状态，将无法撤销，但您可以通过回复提供更多信息。</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>我可以对已解决的工单进行评价吗？</h3>
+                    <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 5V19M19 12H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="faq-answer">
+                    <p>是的，工单解决后，您可以点击"评价"按钮对我们的服务进行评分和提供反馈。您的评价对我们改进服务质量非常重要。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-top">
+                <div class="footer-column">
+                    <div class="footer-logo">加密货币交易平台</div>
+                    <p class="footer-description">安全、高效的加密货币自动交易解决方案，让您的数字资产实现稳健增长</p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" fill="currentColor"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" fill="currentColor"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" fill="currentColor"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3 class="footer-heading">产品</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">交易机器人</a></li>
+                        <li><a href="#">API接口</a></li>
+                        <li><a href="#">交易策略</a></li>
+                        <li><a href="#">价格方案</a></li>
+                        <li><a href="#">市场分析</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3 class="footer-heading">支持</h3>
+                    <ul class="footer-links">
+                        <li><a href="help.html">帮助中心</a></li>
+                        <!-- 工单支持链接已暂时隐藏 -->
+                        <!-- <li><a href="ticket.html">工单支持</a></li> -->
+                        <li><a href="#">API文档</a></li>
+                        <li><a href="#">常见问题</a></li>
+                        <li><a href="#">联系我们</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3 class="footer-heading">公司</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">关于我们</a></li>
+                        <li><a href="#">隐私政策</a></li>
+                        <li><a href="#">服务条款</a></li>
+                        <li><a href="#">安全保障</a></li>
+                        <li><a href="#">加入我们</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 加密货币交易平台 版权所有</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 侧边栏导航切换
+            const sidebarLinks = document.querySelectorAll('.sidebar-link');
+            const ticketSections = [
+                document.getElementById('my-tickets'),
+                document.getElementById('create-ticket'),
+                document.getElementById('closed-tickets')
+            ];
+
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // 移除所有链接的激活状态
+                    sidebarLinks.forEach(l => l.classList.remove('active'));
+                    // 添加当前链接的激活状态
+                    this.classList.add('active');
+                    
+                    // 隐藏所有工单部分
+                    ticketSections.forEach(section => {
+                        if (section) section.style.display = 'none';
+                    });
+                    
+                    // 显示对应的工单部分
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetSection = document.getElementById(targetId);
+                    if (targetSection) {
+                        targetSection.style.display = 'block';
+                    }
+                });
+            });
+
+            // FAQ 折叠功能
+            const faqQuestions = document.querySelectorAll('.faq-question');
+            faqQuestions.forEach(question => {
+                question.addEventListener('click', function() {
+                    const faqItem = this.parentElement;
+                    faqItem.classList.toggle('active');
+                });
+            });
+
+            // 附件上传功能
+            const uploadArea = document.querySelector('.upload-area');
+            const fileInput = document.getElementById('ticket-attachment');
+            
+            uploadArea.addEventListener('click', function() {
+                fileInput.click();
+            });
+            
+            uploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.style.borderColor = '#333';
+            });
+            
+            uploadArea.addEventListener('dragleave', function() {
+                this.style.borderColor = '#ddd';
+            });
+            
+            uploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.style.borderColor = '#ddd';
+                
+                if (e.dataTransfer.files.length > 0) {
+                    fileInput.files = e.dataTransfer.files;
+                    // 这里可以添加文件预览功能
+                    alert('文件已选择: ' + fileInput.files[0].name);
+                }
+            });
+            
+            fileInput.addEventListener('change', function() {
+                if (this.files.length > 0) {
+                    // 这里可以添加文件预览功能
+                    alert('文件已选择: ' + this.files[0].name);
+                }
+            });
+
+            // 表单提交处理
+            const ticketForm = document.getElementById('ticket-form');
+            if (ticketForm) {
+                ticketForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const ticketType = document.getElementById('ticket-type').value;
+                    const ticketTitle = document.getElementById('ticket-title').value;
+                    const ticketDescription = document.getElementById('ticket-description').value;
+                    const ticketAttachment = document.getElementById('ticket-attachment').files[0];
+                    
+                    console.log('工单信息:', {
+                        ticketType,
+                        ticketTitle,
+                        ticketDescription,
+                        ticketAttachment: ticketAttachment ? ticketAttachment.name : '无附件'
+                    });
+                    
+                    // 模拟表单提交
+                    alert('工单提交成功！我们会尽快处理您的问题。');
+                    
+                    // 重置表单
+                    this.reset();
+                    
+                    // 返回工单列表
+                    document.getElementById('create-ticket').style.display = 'none';
+                    document.getElementById('my-tickets').style.display = 'block';
+                    
+                    // 更新导航状态
+                    sidebarLinks.forEach(l => l.classList.remove('active'));
+                    document.querySelector('.sidebar-link[href="#my-tickets"]').classList.add('active');
+                });
+            }
+
+            // 平滑滚动
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    if (this.classList.contains('sidebar-link')) {
+                        return; // 侧边栏链接已单独处理
+                    }
+                    
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+        
+        // 加载导航栏
+        function loadNavbar() {
+            // 检查用户是否登录（这里简化处理，实际应根据后端判断）
+            const isLoggedIn = localStorage.getItem('user_id') && localStorage.getItem('session_id');
+            
+            // 选择要加载的导航栏类型
+            const navbarFile = isLoggedIn ? 'navbar-loggedin.html' : 'navbar.html';
+            
+            // 加载导航栏HTML
+            fetch(navbarFile)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('加载导航栏失败');
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    // 注入导航栏HTML到页面
+                    const navbarContainer = document.createElement('div');
+                    navbarContainer.id = 'navbar-container';
+                    navbarContainer.innerHTML = html;
+                    document.body.insertBefore(navbarContainer, document.body.firstChild);
+                    
+                    // 设置当前页面的active状态
+                    setActiveNavItem('ticket.html');
+                      
+                    // 在导航栏加载完成后，绑定激活码按钮事件
+                    setTimeout(() => {
+                        if (window.activationModal) {
+                            const activationButton = document.getElementById('activation-button');
+                            if (activationButton) {
+                                activationButton.addEventListener('click', function() {
+                                    window.activationModal.open();
+                                });
+                            }
+                        }
+                        
+                        // 绑定退出登录按钮事件
+                        const logoutButton = document.getElementById('logout-button');
+                        if (logoutButton) {
+                            logoutButton.addEventListener('click', function() {
+                                // 直接调用登出函数或定义登出逻辑
+                                fetch('http://43.134.114.73:8000/api/auth/logout', {
+                                    method: 'POST',
+                                    credentials: 'include'
+                                })
+                                .catch(error => {
+                                    console.error('登出失败:', error);
+                                })
+                                .finally(() => {
+                                    // 清除本地存储的所有用户信息和session数据
+                                    localStorage.removeItem('user_id');
+                                    localStorage.removeItem('username');
+                                    localStorage.removeItem('email');
+                                    localStorage.removeItem('session_id');
+                                    localStorage.removeItem('rememberedUser');
+                                    localStorage.removeItem('access_token');
+                                    localStorage.removeItem('token_type');
+                                    // 刷新页面或跳转到首页
+                                    window.location.href = 'index.html';
+                                });
+                            });
+                        }
+                    }, 100);
+                })
+                .catch(error => {
+                    console.error('加载导航栏失败:', error);
+                });
+        }
+        
+        // 设置当前页面的导航项为active状态
+        function setActiveNavItem(currentPage) {
+            // 等待导航栏加载完成
+            setTimeout(() => {
+                const navLinks = document.querySelectorAll('.nav-links a');
+                
+                navLinks.forEach(link => {
+                    // 获取链接的href属性值
+                    const href = link.getAttribute('href');
+                    
+                    // 如果链接指向当前页面，则添加active类
+                    if (href === currentPage) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+            }, 100);
+        }
+        
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 加载导航栏
+            loadNavbar();
+            
+            // 简单的有效期显示逻辑
+            function updateValidityDisplay() {
+                const validityElement = document.getElementById('validity-remaining');
+                if (!validityElement) {
+                    return;
+                }
+                
+                // 简单的有效期显示逻辑，实际数据将在各个界面中通过API获取
+                validityElement.textContent = '加载中...';
+            }
+            
+            // 用户退出登录
+            function logoutUser() {
+                // 调用登出API
+                fetch('http://43.134.114.73:8000/api/auth/logout', {
+                    method: 'POST',
+                    credentials: 'include' // 包含cookies
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('登出失败');
+                    }
+                    return response.json();
+                })
+                .catch(error => {
+                    console.error('登出失败:', error);
+                })
+                .finally(() => {
+                    // 清除本地存储的所有用户信息和session数据
+                    localStorage.removeItem('user_id');
+                    localStorage.removeItem('username');
+                    localStorage.removeItem('email');
+                    localStorage.removeItem('session_id');
+                    localStorage.removeItem('rememberedUser');
+                    // 清除任何可能存在的旧版JWT相关数据
+                    localStorage.removeItem('access_token');
+                    localStorage.removeItem('token_type');
+                    // 刷新页面或跳转到首页
+                    window.location.href = 'index.html';
+                });
+            }
+            
+            // 更新有效期显示
+            updateValidityDisplay();
+        });
+    </script>
+    
+    
+</body>
+</html>

@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于我们 - TV CONNECT</title>
+    <!-- 设置网站图标为圆形 -->
+    <link rel="icon" type="image/png" href="picture/通用资源/logo_url.png">
+    <link rel="shortcut icon" type="image/png" href="picture/通用资源/logo_url.png">
+    <!-- 确保在支持的浏览器中显示为圆形 -->
+    <link rel="mask-icon" href="picture/通用资源/logo_url.png" color="#5bbad5">
+    <!-- 移动设备图标 -->
+    <link rel="apple-touch-icon-precomposed" href="picture/通用资源/logo_url.png" />
+    <!-- 引入公共样式 -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- 引入激活码弹窗组件 -->
+    <script type="module">
+        import { activationModal } from './components/activation-modal.js';
+        window.activationModal = activationModal;
+    </script>
+    
+    <!-- 兼容不支持ES模块的浏览器 -->
+    <script nomodule defer src="./components/activation-modal.js"></script>
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        a {
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+        
+        a:hover {
+            color: #000;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .section {
+            padding: 80px 0;
+        }
+        
+
+        
+        /* 页面标题样式 */
+        .page-title {
+            margin-top: 120px;
+            text-align: center;
+            padding: 60px 0;
+            background-color: #f8f8f8;
+        }
+        
+        .page-title h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+        
+        .page-title p {
+            font-size: 18px;
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* 公司简介样式 */
+        .about-intro {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+        }
+        
+        .about-intro .content {
+            flex: 1;
+        }
+        
+        .about-intro h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 20px;
+        }
+        
+        .about-intro h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background-color: #000;
+        }
+        
+        .about-intro p {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+        
+        .about-intro .image {
+            flex: 1;
+            position: relative;
+        }
+        
+        .about-intro .image img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        
+        /* 统计数据样式 */
+        .stats {
+            background-color: #000;
+            color: #fff;
+            padding: 80px 0;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            text-align: center;
+        }
+        
+        .stat-item h3 {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        
+        .stat-item p {
+            font-size: 16px;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* 服务内容样式 */
+        .services-section {
+            background-color: #f8f8f8;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        
+        .section-title p {
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        .service-card {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .service-icon {
+            margin-bottom: 20px;
+            width: 64px;
+            height: 64px;
+        }
+        
+        .service-card h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        
+        .service-card p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        /* 团队介绍样式 */
+        .team-section {
+            padding: 80px 0;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .team-member {
+            text-align: center;
+        }
+        
+        .team-member .image {
+            margin-bottom: 20px;
+            overflow: hidden;
+            border-radius: 50%;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+        }
+        
+        .team-member .image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .team-member:hover .image img {
+            transform: scale(1.1);
+        }
+        
+        .team-member h4 {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+        
+        .team-member p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* 合作伙伴样式 */
+        .partners-section {
+            background-color: #f8f8f8;
+            padding: 60px 0;
+        }
+        
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 40px;
+            text-align: center;
+        }
+        
+        .partner-logo {
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
+        
+        .partner-logo:hover {
+            opacity: 1;
+        }
+        
+        /* 客户评价样式 */
+        .testimonials-section {
+            padding: 80px 0;
+            background-color: #000;
+            color: #fff;
+        }
+        
+        .testimonials-slider {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .testimonial-item {
+            margin-bottom: 40px;
+        }
+        
+        .testimonial-text {
+            font-size: 18px;
+            font-style: italic;
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+        
+        .testimonial-author {
+            font-weight: 600;
+        }
+        
+        /* FAQ样式 */
+        .faq-section {
+            padding: 80px 0;
+            background-color: #f8f8f8;
+        }
+        
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            margin-bottom: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            padding: 20px;
+            background-color: #fff;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        
+        .faq-question:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .faq-answer {
+            padding: 0 20px 20px;
+            display: none;
+            color: #666;
+        }
+        
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+        
+        .faq-icon {
+            width: 20px;
+            height: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+        
+        /* 页脚样式 */
+        footer {
+            background-color: #000;
+            color: #fff;
+            padding: 60px 0;
+        }
+        
+        .footer-top {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column {
+            flex: 1;
+            margin-right: 40px;
+        }
+        
+        .footer-column:last-child {
+            margin-right: 0;
+        }
+        
+        .footer-column h4 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: #fff;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: #aaa;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-column ul li a:hover {
+            color: #fff;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #333;
+            color: #aaa;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1200px) {
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .team-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .partners-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-nav {
+                padding: 10px 20px;
+            }
+            
+            .header-left {
+                gap: 20px;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            
+            .auth-buttons {
+                gap: 10px;
+            }
+            
+            .about-intro {
+                flex-direction: column;
+                gap: 30px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-top {
+                flex-direction: column;
+            }
+            
+            .footer-column {
+                margin-right: 0;
+                margin-bottom: 30px;
+            }
+        }
+        
+    </style>
+</head>
+<body>
+    <!-- 统一导航栏容器 -->
+    <div id="navbar-container"></div>
+    
+    <!-- 页面标题 -->
+    <section class="page-title">
+        <div class="container">
+            <h1>关于我们</h1>
+            <p>我们致力于为全球加密货币交易者提供最安全、最稳定、最高效的交易体验</p>
+        </div>
+    </section>
+    
+    <!-- 公司简介 -->
+    <section class="section about-intro">
+        <div class="container">
+            <div class="content">
+                <h2>我们的故事</h2>
+                <p>tv connect成立于2024年，由一群爱好者创建。我们的使命是为交易者提供更方便的交易工具，只需专注于思考交易本身，而不必被其他所困扰。</p>
+                <p>在未来，我们计划为更多的交易所的用户提供服务，包括但不限于盈立，老虎，长桥等。</p>
+                <p>我们的团队成员来自全球各地，拥有丰富的金融、技术和监管经验，致力于为用户提供最专业的服务。</p>
+            </div>
+            <div class="image">
+                <img src="https://picsum.photos/id/1/600/400" alt="公司简介">
+            </div>
+        </div>
+    </section>
+    
+    <!-- 统计数据 -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h3>100+</h3>
+                    <p>支持国家</p>
+                </div>
+                <div class="stat-item">
+                    <h3>150+</h3>
+                    <p>交易币种</p>
+                </div>
+                <div class="stat-item">
+                    <h3>99.9%</h3>
+                    <p>系统可用性</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 服务内容 -->
+    <section class="section services-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>我们的服务</h2>
+                <p>我们提供全方位的加密货币交易服务，满足不同用户的需求</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <svg class="service-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M32 4L4 16v32l28 12 28-12V16L32 4zm0 50L8 40V20l24 12 24-12v20l-24 14z" fill="black"/>
+                        <path d="M20 24v16h4V24h-4zm16 0v16h4V24h-4z" fill="black"/>
+                    </svg>
+                    <h3>现货交易</h3>
+                    <p>提供150多种加密货币的现货交易，支持市价、限价等多种交易方式，交易执行速度快，手续费低。</p>
+                </div>
+                <div class="service-card">
+                    <svg class="service-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M32 8l16 16h-8v16h-16V24h-8L32 8z" fill="black"/>
+                        <path d="M40 24v8h-8v-8h8z" fill="black"/>
+                    </svg>
+                    <h3>合约交易</h3>
+                    <p>提供比特币、以太坊等主流加密货币的合约交易，支持1-100倍杠杆，满足用户的多样化交易需求。</p>
+                </div>
+                <div class="service-card">
+                    <svg class="service-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M32 8C18.745 8 8 18.745 8 32s10.745 24 24 24 24-10.745 24-24S45.255 8 32 8zm0 40c-8.822 0-16-7.178-16-16S23.178 16 32 16s16 7.178 16 16-7.178 16-16 16z" fill="black"/>
+                        <path d="M32 24c-4.411 0-8 3.589-8 8s3.589 8 8 8 8-3.589 8-8-3.589-8-8-8zm0 12c-2.206 0-4-1.794-4-4s1.794-4 4-4 4 1.794 4 4-1.794 4-4 4z" fill="black"/>
+                    </svg>
+                    <h3>理财服务</h3>
+                    <p>提供多种加密货币理财产品，包括活期理财、定期理财等，帮助用户实现资产增值。</p>
+                </div>
+                <div class="service-card">
+                    <svg class="service-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 8v48c0 2.209 1.791 4 4 4h48c2.209 0 4-1.791 4-4V8c0-2.209-1.791-4-4-4H8c-2.209 0-4 1.791-4 4zm56 4c0-.552-.448-1-1-1h-3c-.552 0-1 .448-1 1v36c0 .552.448 1 1 1h3c.552 0 1-.448 1-1V12zM28 12c0-.552-.448-1-1-1h-3c-.552 0-1 .448-1 1v36c0 .552.448 1 1 1h3c.552 0 1-.448 1-1V12zM12 12c0-.552-.448-1-1-1h-3c-.552 0-1 .448-1 1v36c0 .552.448 1 1 1h3c.552 0 1-.448 1-1V12z" fill="black"/>
+                    </svg>
+                    <h3>API交易</h3>
+                    <p>提供完整的API接口，支持算法交易和量化交易，满足专业交易者的需求。</p>
+                </div>
+                <div class="service-card">
+                    <svg class="service-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M32 8L6 20v24l26 12 26-12V20L32 8zm0 46L8 40V24l24 12 24-12v16l-24 14z" fill="black"/>
+                        <path d="M28 28h8v16h-8z" fill="black"/>
+                        <path d="M32 20c-6.617 0-12 5.383-12 12s5.383 12 12 12 12-5.383 12-12-5.383-12-12-12z" fill="black"/>
+                    </svg>
+                    <h3>交易机器人</h3>
+                    <p>提供多种交易机器人策略，帮助用户实现自动化交易，降低交易风险。</p>
+                </div>
+                <div class="service-card">
+                    <svg class="service-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 12v40c0 2.209 1.791 4 4 4h48c2.209 0 4-1.791 4-4V12c0-2.209-1.791-4-4-4H8c-2.209 0-4 1.791-4 4zm56 36c0 .552-.448 1-1 1H33c-.552 0-1-.448-1-1V28c0-.552.448-1 1-1h26c.552 0 1 .448 1 1v20zM18 48c0 .552-.448 1-1 1H9c-.552 0-1-.448-1-1V28c0-.552.448-1 1-1h8c.552 0 1 .448 1 1v20z" fill="black"/>
+                    </svg>
+                    <h3>安全保障</h3>
+                    <p>采用多重安全措施，包括冷热钱包分离、多重签名、DDoS防护等，保障用户资产安全。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    
+    </section>
+    
+    
+    
+    <!-- FAQ -->
+    <section class="faq-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>常见问题</h2>
+                <p>我们整理了一些用户常见的问题和解答</p>
+            </div>
+            <div class="faq-container">
+                <div class="faq-item active">
+                    <div class="faq-question">
+                        <span>如何注册账户？</span>
+                        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7 12l5 5 5-5" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p>您可以点击网站右上角的"注册"按钮，填写邮箱、设置密码，然后按照提示完成实名认证即可。</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>如何充值和提现？</span>
+                        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7 12l5 5 5-5" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p>登录账户后，点击"资产"页面，选择"充值"或"提现"，按照提示操作即可。充值通常需要网络确认，提现会有审核流程。</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>交易手续费是多少？</span>
+                        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7 12l5 5 5-5" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p>现货交易手续费为0.1%，合约交易手续费为0.05%起，VIP用户可以享受更低的手续费率。</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>如何保障账户安全？</span>
+                        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7 12l5 5 5-5" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p>我们建议您开启两步验证、设置提现白名单、定期修改密码，并不要将账户信息告诉任何人。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-column">
+                    <h4>关于我们</h4>
+                    <p>我们致力于为全球加密货币交易者提供最安全、最稳定、最高效的交易体验。</p>
+                </div>
+                <div class="footer-column">
+                    <h4>快速链接</h4>
+                    <ul>
+                        <li><a href="index.html">首页</a></li>
+                        <li><a href="机器人.html">机器人</a></li>
+                        <li><a href="价格.html">价格</a></li>
+                        <li><a href="help.html">帮助</a></li>
+                        <!-- 工单支持链接已暂时隐藏 -->
+                        <!-- <li><a href="ticket.html">工单支持</a></li> -->
+                        <li><a href="关于我们.html">关于我们</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>联系我们</h4>
+                    <ul>
+                        <li>邮箱：support@cryptotrading.com</li>
+                        <li>电话：+86 123 4567 8901</li>
+                        <li>地址：上海市浦东新区陆家嘴金融中心</li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>关注我们</h4>
+                    <ul>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Telegram</a></li>
+                        <li><a href="#">Discord</a></li>
+                        <li><a href="#">微博</a></li>
+                        <li><a href="#">微信公众号</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 tv connect. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- JavaScript -->
+    <script>
+        // FAQ手风琴效果
+        document.querySelectorAll('.faq-question').forEach(item => {
+            item.addEventListener('click', () => {
+                const parent = item.parentElement;
+                parent.classList.toggle('active');
+            });
+        });
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+    
+    <!-- 导航栏加载脚本 -->
+    <script>
+        // 加载导航栏
+        function loadNavbar() {
+            // 检查用户是否登录（这里简化处理，实际应根据后端判断）
+            const isLoggedIn = localStorage.getItem('user_id') && localStorage.getItem('session_id');
+            
+            // 选择要加载的导航栏类型
+            const navbarFile = isLoggedIn ? 'navbar-loggedin.html' : 'navbar.html';
+            
+            // 加载导航栏HTML
+            fetch(navbarFile)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('加载导航栏失败');
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    // 注入导航栏HTML到页面
+                    const navbarContainer = document.createElement('div');
+                    navbarContainer.id = 'navbar-container';
+                    navbarContainer.innerHTML = html;
+                    document.body.insertBefore(navbarContainer, document.body.firstChild);
+                    
+                    // 设置当前页面的active状态
+                    setActiveNavItem('关于我们.html');
+                      
+                    // 在导航栏加载完成后，绑定激活码按钮事件
+                    setTimeout(() => {
+                        if (window.activationModal) {
+                            const activationButton = document.getElementById('activation-button');
+                            if (activationButton) {
+                                activationButton.addEventListener('click', function() {
+                                    window.activationModal.open();
+                                });
+                            }
+                        }
+                        
+                        // 绑定退出登录按钮事件
+                        const logoutButton = document.getElementById('logout-button');
+                        if (logoutButton) {
+                            logoutButton.addEventListener('click', function() {
+                                // 直接调用登出函数或定义登出逻辑
+                                fetch('http://43.134.114.73:8000/api/auth/logout', {
+                                    method: 'POST',
+                                    credentials: 'include'
+                                })
+                                .catch(error => {
+                                    console.error('登出失败:', error);
+                                })
+                                .finally(() => {
+                                    // 清除本地存储的所有用户信息和session数据
+                                    localStorage.removeItem('user_id');
+                                    localStorage.removeItem('username');
+                                    localStorage.removeItem('email');
+                                    localStorage.removeItem('session_id');
+                                    localStorage.removeItem('rememberedUser');
+                                    localStorage.removeItem('access_token');
+                                    localStorage.removeItem('token_type');
+                                    // 刷新页面或跳转到首页
+                                    window.location.href = 'index.html';
+                                });
+                            });
+                        }
+                    }, 100);
+                })
+                .catch(error => {
+                    console.error('加载导航栏失败:', error);
+                });
+        }
+        
+        // 设置当前页面的导航项为active状态
+        function setActiveNavItem(currentPage) {
+            // 等待导航栏加载完成
+            setTimeout(() => {
+                const navLinks = document.querySelectorAll('.nav-links a');
+                
+                navLinks.forEach(link => {
+                    // 获取链接的href属性值
+                    const href = link.getAttribute('href');
+                    
+                    // 如果链接指向当前页面，则添加active类
+                    if (href === currentPage) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+            }, 100);
+        }
+        
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 加载导航栏
+            loadNavbar();
+        });
+    </script>
+</body>
+</html>

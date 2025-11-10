@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV CONNECT - 交易仪表盘</title>
+    <!-- 设置网站图标为圆形 -->
+    <link rel="icon" type="image/png" href="picture/通用资源/logo_url.png">
+    <link rel="shortcut icon" type="image/png" href="picture/通用资源/logo_url.png">
+    <!-- 确保在支持的浏览器中显示为圆形 -->
+    <link rel="mask-icon" href="picture/通用资源/logo_url.png" color="#5bbad5">
+    <!-- 移动设备图标 -->
+    <link rel="apple-touch-icon-precomposed" href="picture/通用资源/logo_url.png" />
+    <link rel="stylesheet" href="app/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="app/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="app/dist/app.css" />
+    <link rel="stylesheet" href="assets/font/font-awesome.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        /* Header Styles */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 30px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+            font-size: 16px;
+        }
+
+        .nav-links a:hover {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+        }
+
+        /* 为激活状态的导航链接添加下划线 */
+        .nav-links a.active {
+            color: #667eea;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 16px;
+            width: calc(100% - 32px);
+            height: 2px;
+            background-color: #667eea;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            min-width: 250px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 20px;
+            display: none;
+            z-index: 1001;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* API Info Styles */
+        .api-form-group {
+            margin-bottom: 20px;
+        }
+
+        .api-form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .api-form-group input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .api-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .api-tab {
+            padding: 8px 16px;
+            background: #f5f5f5;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .api-tab.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .api-tab-content {
+            display: none;
+        }
+
+        .api-tab-content.active {
+            display: block;
+        }
+
+        /* Main Layout */
+        .main-container {
+            display: flex;
+            min-height: calc(100vh - 80px);
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 300px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-right: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .sidebar h3 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .template-list {
+            list-style: none;
+        }
+
+        .template-item {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .template-item:hover {
+            border-color: #667eea;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
+        }
+
+        .template-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .template-info {
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* Content Area */
+        .content-area {
+            flex: 1;
+            padding: 30px;
+        }
+
+        .generator-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .generator-header {
+            background: linear-gradient(135deg, #ff6b6b, #ffa726);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .generator-header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .form-container {
+            padding: 40px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .currency-search {
+            position: relative;
+        }
+
+        .currency-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-top: none;
+            border-radius: 0 0 12px 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+
+        .currency-suggestion {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .currency-suggestion:hover {
+            background-color: #f8f9fa;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .confirm-btn, .save-template-btn {
+            flex: 1;
+            padding: 18px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .confirm-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .save-template-btn {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+        }
+
+        .confirm-btn:hover, .save-template-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .result-container {
+            margin-top: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border: 2px solid #e9ecef;
+            display: none;
+        }
+
+        .result-container h3 {
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .json-output {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #4299e1;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background-color 0.2s ease;
+        }
+
+        .copy-btn:hover {
+            background: #3182ce;
+        }
+
+        .copy-success {
+            background: #38a169 !important;
+        }
+
+         /* 圆形控制按钮样式 */
+        .template-controls {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            justify-content: flex-end;
+        }
+        
+        .control-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+        
+        .play-btn {
+            background: #48bb78;
+            color: white;
+        }
+        
+        .play-btn:hover {
+            background: #38a169;
+            transform: scale(1.1);
+        }
+        
+        .pause-btn {
+            background: #ed8936;
+            color: white;
+        }
+        
+        .pause-btn:hover {
+            background: #dd6b20;
+            transform: scale(1.1);
+        }
+        
+        .delete-btn {
+            background: #e53e3e;
+            color: white;
+        }
+        
+        .delete-btn:hover {
+            background: #c53030;
+            transform: scale(1.1);
+        }
+        
+        /* API保存按钮样式 - 这部分应该放在媒体查询外部 */
+        .api-form-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .api-tab-content {
+            text-align: center;
+            padding-bottom: 15px;
+        }
+
+        .api-save-btn {
+            background: #48bb78;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 12px; /* 增加圆角值，实现钝角效果 */
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 15px;
+            transition: all 0.2s ease;
+            opacity: 0.5; /* 设置透明度为0.5 */
+            display: inline-block;
+        }
+
+        .api-save-btn:hover {
+            background: #38a169;
+            opacity: 1.0; /* 鼠标悬停时透明度恢复为1.0，增强交互体验 */
+        }
+
+        .api-save-btn.saving {
+            background: #718096;
+            cursor: not-allowed;
+            opacity: 0.7; /* 保存中状态的透明度 */
+        }
+
+        .api-save-btn.saved {
+            background: #38a169;
+            opacity: 1.0; /* 保存成功状态的透明度 */
+        }
+        
+        .template-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .template-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            color: white;
+        }
+        
+        .template-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .status-btn {
+            background-color: #4CAF50;
+        }
+        
+        .status-btn.paused {
+            background-color: #FF9800;
+        }
+        
+        .delete-btn {
+            background-color: #f44336;
+        }
+        
+        .delete-btn:hover {
+            background-color: #d32f2f;
+        }
+
+        /* 模态窗口样式 */
+        .modal {
+            display: none; /* 默认隐藏 */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #1a1a2e;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #333;
+        }
+
+        .modal-header h3 {
+            color: #fff;
+            margin: 0;
+        }
+
+        .close-btn {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: #fff;
+        }
+
+        .modal-body {
+            margin-bottom: 20px;
+        }
+
+        .modal-body .form-group {
+            margin-bottom: 15px;
+        }
+
+        .modal-body label {
+            display: block;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+
+        .modal-body input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #333;
+            border-radius: 4px;
+            background-color: #0f3460;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .modal-body input:focus {
+            outline: none;
+            border-color: #4a6fa5;
+        }
+
+        .message {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+            display: none;
+        }
+
+        .message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .modal-footer .btn {
+            padding: 8px 20px;
+        }
+
+        @media (max-width: 1024px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid rgba(0,0,0,0.1);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-nav {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 10px;
+                width: 100%;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+            
+            .generator-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+            /* 调整API保存按钮的样式 */
+            .api-tab-content {
+                text-align: center;
+            }
+
+        
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="header-nav">
+            <div class="header-left">
+                <a href="#" class="logo">CryptoTrader Pro</a>
+                <ul class="nav-links">
+                    <li class="dropdown">
+                        <a href="#">用户API信息</a>
+                        <div class="dropdown-menu">
+                            <div class="api-tabs">
+                                <button class="api-tab active" data-tab="gate">Gate</button>
+                                <button class="api-tab" data-tab="okx">OKX</button>
+                                <button class="api-tab" data-tab="yingli">盈立</button>
+                            </div>
+                            <div class="api-tab-content active" id="gate">
+                                <div class="api-form-group">
+                                    <label>API密钥:</label>
+                                    <input type="text" id="gate-key" placeholder="输入Gate API密钥">
+                                </div>
+                                <div class="api-form-group">
+                                    <label>私钥:</label>
+                                    <input type="password" id="gate-secret" placeholder="输入Gate私钥">
+                                </div>
+                            </div>
+                            <div class="api-tab-content" id="okx">
+                                <div class="api-form-group">
+                                    <label>API密钥:</label>
+                                    <input type="text" id="okx-key" placeholder="输入OKX API密钥">
+                                </div>
+                                <div class="api-form-group">
+                                    <label>私钥:</label>
+                                    <input type="password" id="okx-secret" placeholder="输入OKX私钥">
+                                </div>
+                            </div>
+                            <div class="api-tab-content" id="yingli">
+                                <div class="api-form-group">
+                                    <label>API密钥:</label>
+                                    <input type="text" id="yingli-key" placeholder="输入盈立API密钥">
+                                </div>
+                                <div class="api-form-group">
+                                    <label>私钥:</label>
+                                    <input type="password" id="yingli-secret" placeholder="输入盈立私钥">
+                                </div>
+                            </div>
+                            <button class="api-save-btn" data-exchange="yingli">保存</button>
+                            
+                        </div>
+                    </li>
+                    <li><a href="#">警报机器人</a></li>
+                    <!-- 工单链接已暂时隐藏 -->
+<!-- <li><a href="#">工单</a></li> -->
+                    <li><a href="#">价格</a></li>
+                    <li><a href="#">更多服务</a></li>
+                </ul>
+            </div>
+            <div class="header-nav-right">
+                <!-- 用户状态信息 - 在同一行显示 -->
+                <div class="user-status">
+                    <div class="status-item">
+                        <span class="status-label">有效期:</span>
+                        <span class="status-value">2024-12-31</span>
+                    </div>
+                </div>
+                
+                <!-- 替换为新的按钮 - 与状态信息在同一行 -->
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h3>保存的模板</h3>
+            <ul class="template-list" id="templateList">
+                <li class="template-item" data-template-id="1">
+                    <div class="template-name">BTC杠杆交易模板</div>
+                    <div class="template-info">BTC/USDT - 10x杠杆 - 市价单</div>
+                    <div class="template-actions">
+                        <button class="template-btn status-btn" title="暂停">▶</button>
+                        <button class="template-btn delete-btn" title="删除">×</button>
+                    </div>
+                </li>
+                <li class="template-item" data-template-id="2">
+                    <div class="template-name">ETH限价交易模板</div>
+                    <div class="template-info">ETH/USDT - 5x杠杆 - 限价单</div>
+                    <div class="template-actions">
+                        <button class="template-btn status-btn" title="暂停">▶</button>
+                        <button class="template-btn delete-btn" title="删除">×</button>
+                    </div>
+                </li>
+                <li class="template-item" data-template-id="3">
+                    <div class="template-name">SOL快速交易模板</div>
+                    <div class="template-info">SOL/USDT - 2x杠杆 - 市价单</div>
+                    <div class="template-actions">
+                        <button class="template-btn status-btn" title="暂停">▶</button>
+                        <button class="template-btn delete-btn" title="删除">×</button>
+                    </div>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Content Area -->
+        <main class="content-area">
+            <div class="generator-container">
+                <div class="generator-header">
+                    <h1>加密货币交易订单生成器</h1>
+                    <p>轻松创建专业的交易订单JSON数据</p>
+                </div>
+                
+                <div class="form-container">
+                    <form id="orderForm">
+                        <div class="form-grid">
+                            <div class="form-group currency-search">
+                                <label for="currency">交易币种</label>
+                                <input type="text" id="currency" placeholder="输入币种如BTC, ETH..." autocomplete="off">
+                                <div class="currency-suggestions" id="currencySuggestions"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="quantity">交易手数</label>
+                                <input type="number" id="quantity" step="1" min="1" placeholder="输入交易手数">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="leverage">杠杆倍数</label>
+                                <select id="leverage">
+                                    <option value="1">1x (无杠杆)</option>
+                                    <option value="2">2x</option>
+                                    <option value="3">3x</option>
+                                    <option value="5">5x</option>
+                                    <option value="10">10x</option>
+                                    <option value="20">20x</option>
+                                    <option value="50">50x</option>
+                                    <option value="100">100x</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="settlementCurrency">结算货币</label>
+                                <input type="text" id="settlementCurrency" value="USDT" placeholder="结算货币">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="tradeDirection">交易方向</label>
+                                <select id="tradeDirection">
+                                    <option value="long_only">只做多</option>
+                                    <option value="short_only">只做空</option>
+                                    <option value="both">双向</option>
+                                    <option value="both_reverse">双向反手</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="tradeType">交易类型</label>
+                                <select id="tradeType">
+                                    <option value="futures">合约</option>
+                                    <option value="spot">现货</option>
+                                    <option value="option">末日期权</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="orderType">订单类型</label>
+                                <select id="orderType">
+                                    <option value="market">市价单</option>
+                                    <option value="limit">限价单</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="action-buttons">
+                            <button type="submit" class="confirm-btn">生成交易订单</button>
+                            <button type="button" class="save-template-btn" id="saveTemplateBtn">保存为模板</button>
+                        </div>
+                    </form>
+                    
+                    <div class="result-container" id="resultContainer">
+                        <h3>生成的JSON数据</h3>
+                        <div class="json-output" id="jsonOutput">
+                            <button class="copy-btn" id="copyBtn">复制</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <div id="redeemModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>兑换码激活</h3>
+                    <span class="close-btn">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="redeemCode">请输入兑换码：</label>
+                        <input type="text" id="redeemCode" placeholder="输入您的兑换码">
+                    </div>
+                    <div id="redeemMessage" class="message"></div>
+                </div>
+                <div class="modal-footer">
+                    <button id="cancelRedeemBtn" class="btn btn-outline">取消</button>
+                    <button id="confirmRedeemBtn" class="btn btn-primary">立即兑换</button>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+    <script>
+        // 常用加密货币列表
+        const cryptocurrencies = [
+            'BTC', 'ETH', 'BNB', 'XRP', 'ADA', 'SOL', 'DOGE', 'DOT', 'MATIC', 'SHIB',
+            'AVAX', 'UNI', 'LINK', 'LTC', 'ATOM', 'XLM', 'ICP', 'VET', 'FIL', 'TRX',
+            'ETC', 'THETA', 'AAVE', 'XMR', 'ALGO', 'HBAR', 'EGLD', 'FLOW', 'MANA', 'SAND'
+        ];
+
+        // 预定义模板数据
+        const templateData = {
+            1: { currency: 'BTC', quantity: 1, leverage: 10, settlementCurrency: 'USDT', orderType: 'market' },
+            2: { currency: 'ETH', quantity: 2, leverage: 5, settlementCurrency: 'USDT', orderType: 'limit' },
+            3: { currency: 'SOL', quantity: 5, leverage: 2, settlementCurrency: 'USDT', orderType: 'market' }
+        };
+
+        // DOM元素
+        const currencyInput = document.getElementById('currency');
+        const currencySuggestions = document.getElementById('currencySuggestions');
+        const form = document.getElementById('orderForm');
+        const resultContainer = document.getElementById('resultContainer');
+        const jsonOutput = document.getElementById('jsonOutput');
+        const saveTemplateBtn = document.getElementById('saveTemplateBtn');
+
+        // API标签切换
+        document.querySelectorAll('.api-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // 移除所有活跃状态
+                document.querySelectorAll('.api-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.api-tab-content').forEach(c => c.classList.remove('active'));
+                
+                // 设置当前标签为活跃
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab).classList.add('active');
+            });
+        });
+
+        // 货币搜索功能
+        currencyInput.addEventListener('input', function() {
+            const query = this.value.toUpperCase();
+            const filteredCurrencies = cryptocurrencies.filter(crypto => 
+                crypto.includes(query)
+            );
+
+            if (query && filteredCurrencies.length > 0) {
+                currencySuggestions.innerHTML = '';
+                filteredCurrencies.slice(0, 8).forEach(crypto => {
+                    const suggestion = document.createElement('div');
+                    suggestion.className = 'currency-suggestion';
+                    suggestion.textContent = crypto;
+                    suggestion.addEventListener('click', () => {
+                        currencyInput.value = crypto;
+                        currencySuggestions.style.display = 'none';
+                    });
+                    currencySuggestions.appendChild(suggestion);
+                });
+                currencySuggestions.style.display = 'block';
+            } else {
+                currencySuggestions.style.display = 'none';
+            }
+        });
+
+        // 点击外部隐藏建议
+        document.addEventListener('click', function(e) {
+            if (!currencyInput.contains(e.target) && !currencySuggestions.contains(e.target)) {
+                currencySuggestions.style.display = 'none';
+            }
+        });
+
+        // 自动转换结算货币为大写
+        document.getElementById('settlementCurrency').addEventListener('input', function() {
+            this.value = this.value.toUpperCase();
+        });
+
+        // 模板点击事件
+        document.querySelectorAll('.template-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const templateId = item.dataset.templateId;
+                const template = templateData[templateId];
+                
+                if (template) {
+                    document.getElementById('currency').value = template.currency;
+                    document.getElementById('quantity').value = template.quantity;
+                    document.getElementById('leverage').value = template.leverage;
+                    document.getElementById('settlementCurrency').value = template.settlementCurrency;
+                    document.getElementById('orderType').value = template.orderType;
+                    document.getElementById('tradeType').value = template.tradeType || 'futures'; // 设置交易类型，默认合约
+                    
+                    // 高亮选中的模板
+                    document.querySelectorAll('.template-item').forEach(t => t.style.backgroundColor = '');
+                    item.style.backgroundColor = 'rgba(102, 126, 234, 0.1)';
+                }
+            });
+        });
+
+        // 表单提交处理
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const currency = document.getElementById('currency').value.toUpperCase();
+            const quantity = parseInt(document.getElementById('quantity').value);
+            const leverage = parseInt(document.getElementById('leverage').value);
+            const settlementCurrency = document.getElementById('settlementCurrency').value.toUpperCase();
+            const orderType = document.getElementById('orderType').value;
+            const tradeDirection = document.getElementById('tradeDirection').value; // 获取交易方向
+            const tradeType = document.getElementById('tradeType').value; // 获取交易类型
+
+            // 验证必填字段
+            if (!currency || !quantity || quantity < 1) {
+                alert('请填写完整的交易信息，交易手数最小为1。');
+                return;
+            }
+
+            // 构建JSON数据
+            const orderData = {
+                ticker: "{{ticker}}",
+                exchange: "{{exchange}}",
+                interval: "{{interval}}",  
+                alert_time: "{{time}}",  
+                current_time: "{{timenow}}",  
+                open_price: "{{open}}",  
+                close_price: "{{close}}",  
+                high_price: "{{high}}",  
+                low_price: "{{low}}",  
+                volume: "{{volume}}",  
+                quote_currency: "{{syminfo.currency}}",  
+                base_currency: "{{syminfo.basecurrency}}",  
+                position_size: "{{strategy.position_size}}",  
+                order_action: "{{strategy.order.action}}",  
+                order_contracts: "{{strategy.order.contracts}}",  
+                order_price: "{{strategy.order.price}}",  
+                order_id: "{{strategy.order.id}}",  
+                order_comment: "{{strategy.order.comment}}",  
+                alert_message: "{{strategy.order.alert_message}}", 
+                market_position: "{{strategy.market_position}}",  
+                market_position_size: "{{strategy.market_position_size}}",  
+                previous_market_position: "{{strategy.prev_market_position}}",  
+                previous_position_size: "{{strategy.prev_market_position_size}}",
+                tradingPair: currency,
+                currency: currency,
+                quantity: quantity,
+                leverage: leverage,
+                settlementCurrency: settlementCurrency,
+                orderType: orderType,
+                price: orderType === 'market' ? "0" : "{{close}}",
+                // 添加新字段
+                tradeDirection: tradeDirection,
+                tradeType: tradeType, // 添加交易类型字段
+                user_id: 1001, // 暂时使用固定值，后续将从网页存储数据读取
+            };
+
+            // 显示结果
+            const jsonString = JSON.stringify(orderData, null, 2);
+            jsonOutput.innerHTML = `<button class="copy-btn" id="copyBtn">复制</button>${jsonString}`;
+            resultContainer.style.display = 'block';
+            
+            // 重新绑定复制按钮事件
+            document.getElementById('copyBtn').addEventListener('click', copyToClipboard);
+            
+            // 滚动到结果
+            resultContainer.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // 保存模板功能
+        saveTemplateBtn.addEventListener('click', function() {
+            const currency = document.getElementById('currency').value.toUpperCase();
+            const quantity = parseInt(document.getElementById('quantity').value);
+            const leverage = parseInt(document.getElementById('leverage').value);
+            const settlementCurrency = document.getElementById('settlementCurrency').value.toUpperCase();
+            const orderType = document.getElementById('orderType').value;
+            const tradeType = document.getElementById('tradeType').value; // 获取交易类型
+        
+            if (!currency || !quantity) {
+                alert('请先填写交易信息再保存模板');
+                return;
+            }
+        
+            const templateName = prompt('请输入模板名称:');
+            if (templateName) {
+                const templateList = document.getElementById('templateList');
+                const newTemplate = document.createElement('li');
+                newTemplate.className = 'template-item';
+                // 生成唯一的模板ID
+                const templateId = Date.now();
+                newTemplate.dataset.templateId = templateId;
+                
+                // 创建模板HTML结构，包含控制按钮
+                newTemplate.innerHTML = `
+                    <div class="template-name">${templateName}</div>
+                    <div class="template-info">${currency}/${settlementCurrency} - ${leverage}x杠杆 - ${orderType === 'market' ? '市价单' : '限价单'}</div>
+                    <div class="template-actions">
+                        <button class="template-btn status-btn" title="暂停">▶</button>
+                        <button class="template-btn delete-btn" title="删除">×</button>
+                    </div>
+                `;
+                
+                // 添加点击事件
+                newTemplate.addEventListener('click', () => {
+                    document.getElementById('currency').value = currency;
+                    document.getElementById('quantity').value = quantity;
+                    document.getElementById('leverage').value = leverage;
+                    document.getElementById('settlementCurrency').value = settlementCurrency;
+                    document.getElementById('orderType').value = orderType;
+                    document.getElementById('tradeType').value = tradeType;
+                });
+                
+                // 为新添加的状态按钮绑定事件
+                const statusBtn = newTemplate.querySelector('.status-btn');
+                statusBtn.addEventListener('click', function(e) {
+                    e.stopPropagation(); // 防止触发模板项的点击事件
+                    this.classList.toggle('paused');
+                    if (this.classList.contains('paused')) {
+                        this.textContent = '⏸';
+                        this.title = '启动';
+                    } else {
+                        this.textContent = '▶';
+                        this.title = '暂停';
+                    }
+                });
+                
+                // 为新添加的删除按钮绑定事件
+                const deleteBtn = newTemplate.querySelector('.delete-btn');
+                deleteBtn.addEventListener('click', function(e) {
+                    e.stopPropagation(); // 防止触发模板项的点击事件
+                    if (confirm(`确定要删除模板 ${templateName} 吗？`)) {
+                        newTemplate.remove();
+                        // 这里可以添加删除模板的后端API调用
+                        console.log(`删除模板ID: ${templateId}`);
+                    }
+                });
+                
+                templateList.appendChild(newTemplate);
+                alert('模板保存成功！');
+            }
+        });
+
+        // 复制到剪贴板功能
+        function copyToClipboard() {
+            const jsonText = jsonOutput.textContent.replace('复制', '');
+            navigator.clipboard.writeText(jsonText).then(() => {
+                const copyButton = document.getElementById('copyBtn');
+                copyButton.textContent = '已复制!';
+                copyButton.classList.add('copy-success');
+                
+                setTimeout(() => {
+                    copyButton.textContent = '复制';
+                    copyButton.classList.remove('copy-success');
+                }, 2000);
+            }).catch(err => {
+                console.error('复制失败:', err);
+                alert('复制失败，请手动选择文本复制');
+            });
+        }
+        /* 在API标签切换逻辑之后添加API保存和加载功能 */
+        // API标签切换
+        // ... (保留原有的标签切换代码)
+
+        // 加载保存的API信息
+        function loadApiCredentials() {
+            try {
+                const savedData = localStorage.getItem('cryptoTraderApiCredentials');
+                if (savedData) {
+                    const credentials = JSON.parse(savedData);
+                    
+                    // 加载Gate API信息
+                    if (credentials.gate) {
+                        document.getElementById('gate-key').value = credentials.gate.key || '';
+                        document.getElementById('gate-secret').value = credentials.gate.secret || '';
+                    }
+                    
+                    // 加载OKX API信息
+                    if (credentials.okx) {
+                        document.getElementById('okx-key').value = credentials.okx.key || '';
+                        document.getElementById('okx-secret').value = credentials.okx.secret || '';
+                    }
+                    
+                    // 加载盈立API信息
+                    if (credentials.yingli) {
+                        document.getElementById('yingli-key').value = credentials.yingli.key || '';
+                        document.getElementById('yingli-secret').value = credentials.yingli.secret || '';
+                    }
+                }
+            } catch (error) {
+                console.error('加载API信息失败:', error);
+            }
+        }
+
+        // 保存API信息
+        function saveApiCredentials(exchange) {
+            try {
+                const savedData = localStorage.getItem('cryptoTraderApiCredentials');
+                const credentials = savedData ? JSON.parse(savedData) : {};
+                
+                const keyInput = document.getElementById(`${exchange}-key`);
+                const secretInput = document.getElementById(`${exchange}-secret`);
+                
+                credentials[exchange] = {
+                    key: keyInput.value,
+                    secret: secretInput.value
+                };
+                
+                localStorage.setItem('cryptoTraderApiCredentials', JSON.stringify(credentials));
+                
+                // 显示保存成功的反馈
+                const saveBtn = document.querySelector(`.api-save-btn[data-exchange="${exchange}"]`);
+                const originalText = saveBtn.textContent;
+                saveBtn.textContent = '已保存!';
+                saveBtn.classList.add('saved');
+                
+                setTimeout(() => {
+                    saveBtn.textContent = originalText;
+                    saveBtn.classList.remove('saved');
+                }, 2000);
+                
+            } catch (error) {
+                console.error('保存API信息失败:', error);
+                alert('保存API信息失败，请重试');
+            }
+        }
+
+        // 为保存按钮添加点击事件
+        document.querySelectorAll('.api-save-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const exchange = this.dataset.exchange;
+                saveApiCredentials(exchange);
+            });
+        });
+
+        // 页面加载时加载保存的API信息
+        window.addEventListener('load', loadApiCredentials);
+
+        // 添加到现有的<script>标签或创建新的<script>标签
+        document.addEventListener('DOMContentLoaded', function() {
+            // 为所有状态按钮添加点击事件
+            const statusBtns = document.querySelectorAll('.status-btn');
+            statusBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation(); // 防止触发模板项的点击事件
+                    this.classList.toggle('paused');
+                    if (this.classList.contains('paused')) {
+                        this.textContent = '⏸';
+                        this.title = '启动';
+                    } else {
+                        this.textContent = '▶';
+                        this.title = '暂停';
+                    }
+                });
+            });
+            
+            // 为所有删除按钮添加点击事件
+            const deleteBtns = document.querySelectorAll('.delete-btn');
+            deleteBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation(); // 防止触发模板项的点击事件
+                    const templateItem = this.closest('.template-item');
+                    const templateId = templateItem.dataset.templateId;
+                    if (confirm(`确定要删除模板 ${templateItem.querySelector('.template-name').textContent} 吗？`)) {
+                        templateItem.remove();
+                        // 这里可以添加删除模板的后端API调用
+                        console.log(`删除模板ID: ${templateId}`);
+                    }
+                });
+            });
+            
+            // 简单的有效期显示逻辑
+            function updateValidityDisplay() {
+                const validityElement = document.getElementById('validity-remaining');
+                if (!validityElement) {
+                    return;
+                }
+                
+                // 简单的有效期显示逻辑，实际数据将在各个界面中通过API获取
+                validityElement.textContent = '加载中...';
+            }
+            
+            // 用户退出登录
+            function logoutUser() {
+                // 调用登出API
+                fetch('http://43.134.114.73:8000/api/auth/logout', {
+                    method: 'POST',
+                    credentials: 'include' // 包含cookies
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('登出失败');
+                    }
+                    return response.json();
+                })
+                .catch(error => {
+                    console.error('登出失败:', error);
+                })
+                .finally(() => {
+                    // 清除本地存储的所有用户信息和session数据
+                    localStorage.removeItem('user_id');
+                    localStorage.removeItem('username');
+                    localStorage.removeItem('email');
+                    localStorage.removeItem('session_id');
+                    localStorage.removeItem('rememberedUser');
+                    // 清除任何可能存在的旧版JWT相关数据
+                    localStorage.removeItem('access_token');
+                    localStorage.removeItem('token_type');
+                    // 刷新页面或跳转到首页
+                    window.location.href = 'index.html';
+                });
+            }
+            
+            // 更新有效期显示
+            updateValidityDisplay();
+        });
+        
+        // 兑换码激活功能
+        const redeemModal = document.getElementById('redeemModal');
+        const activateBtn = document.querySelector('.btn-outline[href="#"]'); // 找到兑换码激活按钮
+        const closeBtn = document.querySelector('.close-btn');
+        const cancelRedeemBtn = document.getElementById('cancelRedeemBtn');
+        const confirmRedeemBtn = document.getElementById('confirmRedeemBtn');
+        const redeemCodeInput = document.getElementById('redeemCode');
+        const redeemMessage = document.getElementById('redeemMessage');
+
+        // 显示模态窗口
+        activateBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            redeemMessage.textContent = '';
+            redeemMessage.classList.remove('error');
+            redeemCodeInput.value = '';
+            redeemModal.style.display = 'block';
+        });
+
+        // 关闭模态窗口的函数
+        function closeModal() {
+            redeemModal.style.display = 'none';
+        }
+
+        // 点击关闭按钮关闭模态窗口
+        closeBtn.addEventListener('click', closeModal);
+
+        // 点击取消按钮关闭模态窗口
+        cancelRedeemBtn.addEventListener('click', closeModal);
+
+        // 点击模态窗口外部关闭模态窗口
+        window.addEventListener('click', function(e) {
+            if (e.target === redeemModal) {
+                closeModal();
+            }
+        });
+
+        // 兑换码验证逻辑
+        confirmRedeemBtn.addEventListener('click', function() {
+            const code = redeemCodeInput.value.trim();
+            
+            if (!code) {
+                showError('请输入兑换码');
+                return;
+            }
+            
+            // 模拟兑换码验证过程
+            // 实际应用中，这里应该调用后端API进行验证
+            // 这里只是简单模拟，假设只有特定的兑换码有效
+            
+            // 示例：模拟有效的兑换码列表
+            const validCodes = ['VIP2024', 'PREMIUM60', 'TRIAL15'];
+            
+            if (validCodes.includes(code)) {
+                // 兑换码有效，这里可以添加处理逻辑
+                alert('兑换成功！您的会员已激活。');
+                closeModal();
+                // 这里可以添加更新用户状态的代码
+            } else {
+                // 兑换码无效
+                showError('兑换码不存在或已失效');
+            }
+        });
+
+        // 显示错误信息
+        function showError(message) {
+            redeemMessage.textContent = message;
+            redeemMessage.classList.add('error');
+        }
+
+        // 为输入框添加回车键触发兑换功能
+        redeemCodeInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                confirmRedeemBtn.click();
+            }
+        });
+    </script>
+</body>
+</html>

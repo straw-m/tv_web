@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TV CONNECT - 警报机器人价格方案</title>
+    <link rel="stylesheet" href="为自由职业者设计的专业HTML模板 - Norstar/app/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="为自由职业者设计的专业HTML模板 - Norstar/app/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="为自由职业者设计的专业HTML模板 - Norstar/app/dist/app.css" />
+    <link rel="stylesheet" href="为自由职业者设计的专业HTML模板 - Norstar/assets/font/font-awesome.css" />
+    <!-- 设置网站图标为圆形 -->
+    <link rel="icon" type="image/png" href="picture/通用资源/logo_url.png">
+    <link rel="shortcut icon" type="image/png" href="picture/通用资源/logo_url.png">
+    <!-- 确保在支持的浏览器中显示为圆形 -->
+    <link rel="mask-icon" href="picture/通用资源/logo_url.png" color="#5bbad5">
+    <!-- 移动设备图标 -->
+    <link rel="apple-touch-icon-precomposed" href="picture/通用资源/logo_url.png" />
+    <style>
+      /* 自定义样式 */
+      .alert-bot-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      .alert-bot-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+      }
+      .price-tag {
+        cursor: pointer;
+        transition: color 0.3s ease;
+      }
+      .price-tag:hover {
+        color: #007bff;
+      }
+      .alert-bot-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 20px;
+        display: block;
+        transition: transform 0.3s ease;
+      }
+      .alert-bot-icon:hover {
+        transform: rotate(10deg) scale(1.1);
+      }
+      /* 导航栏字体大小统一 */
+      #menu-primary-menu .menu-item a {
+        font-size: 16px;
+        text-decoration: none;
+        position: relative;
+      }
+      
+      /* 为激活状态的导航链接添加下划线 */
+      #menu-primary-menu .menu-item.current-menu-item a {
+        color: #000;
+        font-weight: 600;
+      }
+      
+      #menu-primary-menu .menu-item.current-menu-item a::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: #333;
+      }
+    </style>
+  </head>
+  <body class="body header-fixed main inner-page pricing pricing-detail is_light">
+    <!-- preloade -->
+    <div class="preload preload-container">
+      <p class="heading-preload" data-text="loading">loading</p>
+    </div>
+    <!-- preload -->
+    <div id="wrapper">
+        <!-- Header -->
+        <header id="header_main" class="header">
+            <div class="container">
+            <div id="site-header-inner">
+                <div class="header__logo">
+                <a href="#">
+                    <img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/logo/logo33@2x.png" alt="加密货币警报机器人" />
+                </a>
+                </div>
+                <div class="header__logo-mobile">
+                <a href="#"
+                    ><img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/logo/logo33@2x.png" alt="加密货币警报机器人"
+                /></a>
+                </div>
+                <nav id="main-nav" class="main-nav">
+                    <ul id="menu-primary-menu" class="menu">
+                        <li class="menu-item">
+                            <a href="#">首页</a>
+                        </li>
+                        <li class="menu-item current-menu-item">
+                            <a href="#pricing">价格方案</a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="#features">功能介绍</a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="#testimonials">用户评价</a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="#faq">常见问题</a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- /#main-nav -->
+                <ul class="social flex align-items-center justify-end">
+                <li>
+                    <a href="#"
+                    ><img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/facebook.svg" alt="Facebook"
+                    /></a>
+                </li>
+                <li>
+                    <a href="#"
+                    ><img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/twitter.svg" alt="Twitter"
+                    /></a>
+                </li>
+                <li>
+                    <a href="#"
+                    ><img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/dribbble.svg" alt="Dribbble"
+                    /></a>
+                </li>
+                <li>
+                    <a href="#"
+                    ><img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/behance.svg" alt="Behance"
+                    /></a>
+                </li>
+                </ul>
+                <div class="mobile-button"><span></span></div>
+                <!-- /.mobile-button -->
+            </div>
+            </div>
+        </header>
+        <!-- end Header -->
+        <section class="page-title-inner">
+            <div class="overlay parallax"></div>
+            <div class="container relative">
+            <ul class="breadcrumb wow fadeIn" data-wow-delay=".2s">
+                <li><a href="#">首页</a></li>
+                <li><span>价格方案</span></li>
+            </ul>
+            <h1 class="heading capitalize wow fadeIn" data-wow-delay=".2s">加密货币警报机器人 <br class="show-destop">灵活的价格方案</h1>
+            <p class=" wow fadeIn" data-wow-delay=".2s">
+                选择最适合您的加密货币交易提醒方案，随时掌握市场动态，不错过任何投资机会。
+            </p>
+            </div>
+        </section>
+
+        <section class="tf-section tf-pricing pb0 mobile-pb0" id="pricing">
+            <div class="container">
+                <div class="row">  
+                    <div class="col-md-12">
+                        <div class="pricing-wrap wow fadeIn" data-wow-delay=".3s">
+                            <div class="billing">
+                                <h6 class="color-main">选择套餐</h6>
+                                <ul>
+                                    <li class="tab-menu first active" data-tab="tab-content-1">月付</li>
+                                    <li class="checked"></li>
+                                    <li class="tab-menu two" data-tab="tab-content-2">年付 <span>(省20%)</span></li>
+                                </ul>  
+                            </div>
+                            
+                            <div class="tab-content active" id="tab-content-1">
+                                <div class="wrap row-3">
+                                    <!-- 基础版 -->
+                                    <div class="pricing-box-style2 alert-bot-card">
+                                        <div class="content">
+                                            <div class="flex width-full">
+                                                <div class="inner">
+                                                    <h5 class="heading">基础版</h5>
+                                                    <p class="color_1">适合初学者</p>
+                                                </div>
+                                                <div class="inner">
+                                                    <p class="price price-tag" onclick="window.location.href='#'">¥99</p>
+                                                    <p class="date">每月</p>
+                                                </div>
+                                            </div>
+                                        <ul>
+                                            <li><span class="desc">基础加密货币价格提醒</span></li>
+                                            <li>
+                                                <img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-7.svg" alt=""><span>支持5种加密货币</span>
+                                            </li>
+                                            <li>
+                                                <img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-7.svg" alt=""><span>价格上下限提醒</span>
+                                            </li>
+                                            <li>
+                                                <img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-7.svg" alt=""><span>邮件通知</span>
+                                            </li>
+                                            <li>
+                                                <img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-7.svg" alt=""><span>基础API访问</span>
+                                            </li>
+                                            <li>
+                                                <img class="ic-light" src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-8.svg" alt="">
+                                                <img class="ic-dark" src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-9.svg" alt="">
+                                                <span>微信提醒</span>
+                                            </li>
+                                            <li>
+                                                <img class="ic-light" src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-8.svg" alt="">
+                                                <img class="ic-dark" src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-9.svg" alt="">
+                                                <span>高级技术指标</span>
+                                            </li>
+                                        </ul>
+                                        <div class="position-btn">
+                                            <a href="#" class="btn"><span>选择套餐</span></a>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <!-- 专业版 -->
+                                    <div class="pricing-box-style2 active alert-bot-card">
+                                        <p class="popular">最受欢迎</p>
+                                        <div class="content">
+                                            <div class="flex width-full">
+                                                <div class="inner">
+                                                    <h5 class="heading">专业版</h5>
+                                                    <p class="color_1">适合活跃交易者</p>
+                                                </div>
+                                                <div class="inner">
+                                                    <p class="price price-tag" onclick="window.location.href='#'">¥199</p>
+                                                    <p class="date">每月</p>
+                                                </div>
+                                            </div>
+                                        <ul>
+                                            <li><span class="desc">全面的加密货币交易提醒</span></li>
+                                            <li>
+                                                <img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-7.svg" alt=""><span>支持20种加密货币</span>
+                                            </li>
+                                            <li>
+                                                <img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-7.svg" alt=""><span>价格波动提醒</span>
+                                            </li>
+                                            <li>
+                                                <img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-7.svg" alt=""><span>邮件+微信双通知</span>
+                                            </li>
+                                            <li>
+                                                <img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-7.svg" alt=""><span>中级API访问</span>
+                                            </li>
+                                            <li>
+                                                <img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-7.svg" alt=""><span>基础技术指标</span>
+                                            </li>
+                                            <li>
+                                                <img class="ic-light" src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-8.svg" alt="">
+                                                <img class="ic-dark" src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-9.svg" alt="">
+                                                <span>自定义交易策略</span>
+                                            </li>
+                                        </ul>
+                                        <div class="position-btn">
+                                            <a href="#" class="btn"><span>选择套餐</span></a>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <!-- 企业版 -->
+                                    <div class="pricing-box-style2 alert-bot-card">
+                                        <div class="content">
+                                            <div class="flex width-full">
+                                                <div class="inner">
+                                                    <h5 class="heading">企业版</h5>
+                                                    <p class="color_1">适合专业投资者</p>
+                                                </div>
+                                                <div class="inner">
+                                                    <p class="price price-tag" onclick="window.location.href='#'">¥299</p>
+                                                    <p class="date">每月</p>
+                                                </div>
+                                            </div>
+                                        <ul>
+                                            <li><span class="desc">专业级加密货币交易分析系统</span></li>
+                                            <li>
+                                                <img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-7.svg" alt=""><span>无限加密货币支持</span>
+                                            </li>
+                                            <li>
+                                                <img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-7.svg" alt=""><span>实时市场监控</span>
+                                            </li>
+                                            <li>
+                                                <img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-7.svg" alt=""><span>多渠道通知系统</span>
+                                            </li>
+                                            <li>
+                                                <img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-7.svg" alt=""><span>高级API访问</span>
+                                            </li>
+                                            <li>
+                                                <img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-7.svg" alt=""><span>全套技术指标</span>
+                                            </li>
+                                            <li>
+                                                <img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-7.svg" alt=""><span>自定义交易策略</span>
+                                            </li>
+                                        </ul>
+                                        <div class="position-btn">
+                                            <a href="#" class="btn"><span>选择套餐</span></a>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>  
+                            </div>
+
+                            <div class="tab-content" id="tab-content-2">
+                                <div class="wrap row-3"> 
+                                    <!-- 基础版（年付） -->
+                                    <div class="pricing-box-style2 alert-bot-card">
+                                        <div class="content">
+                                            <div class="flex width-full">
+                                                <div class="inner">
+                                                    <h5 class="heading">基础版</h5>
+                                                    <p class="color_1">适合初学者</p>
+                                                </div>
+                                                <div class="inner">
+                                                    <p class="price price-tag" onclick="window.location.href='#'">¥950</p>
+                                                    <p class="date">每年（省¥138）</p>
+                                                </div>
+                                            </div>
+                                        <ul>
+                                            <li><span class="desc">基础加密货币价格提醒</span></li>
+                                            <li>
+                                                <img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-7.svg" alt=""><span>支持5种加密货币</span>
+                                            </li>
+                                            <li>
+                                                <img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-7.svg" alt=""><span>价格上下限提醒</span>
+                                            </li>
+                                            <li>
+                                                <img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-7.svg" alt=""><span>邮件通知</span>
+                                            </li>
+                                            <li>
+                                                <img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-7.svg" alt=""><span>基础API访问</span>
+                                            </li>
+                                            <li>
+                                                <img class="ic-light" src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-8.svg" alt="">
+                                                <img class="ic-dark" src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-9.svg" alt="">
+                                                <span>微信提醒</span>
+                                            </li>
+                                            <li>
+                                                <img class="ic-light" src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-8.svg" alt="">
+                                                <img class="ic-dark" src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-9.svg" alt="">
+                                                <span>高级技术指标</span>
+                                            </li>
+                                        </ul>
+                                        <div class="position-btn">
+                                            <a href="#" class="btn"><span>选择套餐</span></a>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <!-- 专业版（年付） -->
+                                    <div class="pricing-box-style2 active alert-bot-card">
+                                        <p class="popular">最受欢迎</p>
+                                        <div class="content">
+                                            <div class="flex width-full">
+                                                <div class="inner">
+                                                    <h5 class="heading">专业版</h5>
+                                                    <p class="color_1">适合活跃交易者</p>
+                                                </div>
+                                                <div class="inner">
+                                                    <p class="price price-tag" onclick="window.location.href='#'">¥1910</p>
+                                                    <p class="date">每年（省¥378）</p>
+                                                </div>
+                                            </div>
+                                        <ul>
+                                            <li><span class="desc">全面的加密货币交易提醒</span></li>
+                                            <li>
+                                                <img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-7.svg" alt=""><span>支持20种加密货币</span>
+                                            </li>
+                                            <li>
+                                                <img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-7.svg" alt=""><span>价格波动提醒</span>
+                                            </li>
+                                            <li>
+                                                <img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-7.svg" alt=""><span>邮件+微信双通知</span>
+                                            </li>
+                                            <li>
+                                                <img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-7.svg" alt=""><span>中级API访问</span>
+                                            </li>
+                                            <li>
+                                                <img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-7.svg" alt=""><span>基础技术指标</span>
+                                            </li>
+                                            <li>
+                                                <img class="ic-light" src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-8.svg" alt="">
+                                                <img class="ic-dark" src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-9.svg" alt="">
+                                                <span>自定义交易策略</span>
+                                            </li>
+                                        </ul>
+                                        <div class="position-btn">
+                                            <a href="#" class="btn"><span>选择套餐</span></a>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <!-- 企业版（年付） -->
+                                    <div class="pricing-box-style2 alert-bot-card">
+                                        <div class="content">
+                                            <div class="flex width-full">
+                                                <div class="inner">
+                                                    <h5 class="heading">企业版</h5>
+                                                    <p class="color_1">适合专业投资者</p>
+                                                </div>
+                                                <div class="inner">
+                                                    <p class="price price-tag" onclick="window.location.href='#'">¥2870</p>
+                                                    <p class="date">每年（省¥718）</p>
+                                                </div>
+                                            </div>
+                                        <ul>
+                                            <li><span class="desc">专业级加密货币交易分析系统</span></li>
+                                            <li>
+                                                <img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-7.svg" alt=""><span>无限加密货币支持</span>
+                                            </li>
+                                            <li>
+                                                <img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-7.svg" alt=""><span>实时市场监控</span>
+                                            </li>
+                                            <li>
+                                                <img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-7.svg" alt=""><span>多渠道通知系统</span>
+                                            </li>
+                                            <li>
+                                                <img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-7.svg" alt=""><span>高级API访问</span>
+                                            </li>
+                                            <li>
+                                                <img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-7.svg" alt=""><span>全套技术指标</span>
+                                            </li>
+                                            <li>
+                                                <img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/check-circle-7.svg" alt=""><span>自定义交易策略</span>
+                                            </li>
+                                        </ul>
+                                        <div class="position-btn">
+                                            <a href="#" class="btn"><span>选择套餐</span></a>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section> 
+
+        <!-- 警报机器人部分 -->
+        <section class="tf-section" id="features">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center mb-50">
+                        <h2 class="heading">强大的加密货币警报机器人</h2>
+                        <p class="color_1">全天候监控市场，不错过任何投资机会</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4" onclick="window.location.href='E:\\业务文件\\html\\crypto_trading_dashboard.html'">
+                        <div class="alert-bot-card p-5 text-center bg-white rounded-lg shadow">
+                            <img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/robot.svg" alt="加密货币警报机器人" class="alert-bot-icon">
+                            <h3>实时价格监控</h3>
+                            <p>全天候监控加密货币市场，实时追踪价格变动</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4" onclick="window.location.href='E:\\业务文件\\html\\crypto_trading_dashboard.html'">
+                        <div class="alert-bot-card p-5 text-center bg-white rounded-lg shadow">
+                            <img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/alert.svg" alt="加密货币警报机器人" class="alert-bot-icon">
+                            <h3>智能提醒系统</h3>
+                            <p>自定义价格阈值，当市场达到设定条件时立即提醒</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4" onclick="window.location.href='E:\\业务文件\\html\\crypto_trading_dashboard.html'">
+                        <div class="alert-bot-card p-5 text-center bg-white rounded-lg shadow">
+                            <img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/chart.svg" alt="加密货币警报机器人" class="alert-bot-icon">
+                            <h3>技术分析指标</h3>
+                            <p>内置多种技术分析指标，帮助您做出更明智的交易决策</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 功能对比部分 -->
+        <section class="tf-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tf-compare">
+                            <div>
+                                <div class="left wow fadeIn" data-wow-delay=".2s">
+                                    <h4 class="heading color-main">功能对比</h4>
+                                    <p class="color_1 mb-20">各套餐功能详细对比</p>
+                                    <ul>
+                                        <li><p>支持的加密货币数量</p></li>
+                                        <li><span>基础版</span></li>
+                                        <li><span>专业版</span></li>
+                                        <li><span>企业版</span></li> 
+                                    </ul>
+                                    <ul>
+                                        <li><p>通知方式</p></li>
+                                        <li><span>仅邮件</span></li>
+                                        <li><span>邮件+微信</span></li>
+                                        <li><span>多渠道</span></li> 
+                                    </ul>
+                                    <ul>
+                                        <li><p>技术指标</p></li>
+                                        <li><span>基础</span></li>
+                                        <li><span>中级</span></li>
+                                        <li><span>高级</span></li> 
+                                    </ul>
+                                    <ul>
+                                        <li><p>API访问</p></li>
+                                        <li><span>有限</span></li>
+                                        <li><span>中级</span></li>
+                                        <li><span>高级</span></li> 
+                                    </ul>
+                                    <ul>
+                                        <li><p>自定义策略</p></li>
+                                        <li><span>不支持</span></li>
+                                        <li><span>基础</span></li>
+                                        <li><span>高级</span></li> 
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 用户评价部分 -->
+        <section class="tf-section tf-testimonial pb-60" id="testimonials">
+            <div class="overlay parallax"></div>
+            <div class="container">
+                <div class="row"> 
+                    <div class="col-md-12 wow fadeIn" data-wow-delay=".2s">
+                        <div class="swiper-container sl-testimonial mb-58">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide">
+                                    <div class="tf-title pd-16">
+                                        <p class="sub-title white center mb-24">"这个加密货币警报机器人帮助我抓住了好几次重要的市场机会，真的是交易必备工具！"</p>
+                                        <h6 class="white center">李明 // 资深加密货币投资者</h6>
+                                    </div>  
+                                </div>
+                                <div class="swiper-slide">
+                                    <div class="tf-title pd-16">
+                                        <p class="sub-title white center mb-24">"作为一个加密货币新手，这个警报系统让我能够在正确的时间做出决策，避免了很多不必要的损失。"</p>
+                                        <h6 class="white center">王芳 // 加密货币初学者</h6>
+                                    </div>  
+                                </div>
+                                <div class="swiper-slide">
+                                    <div class="tf-title pd-16">
+                                        <p class="sub-title white center mb-24">"专业版的技术指标分析功能非常强大，为我的交易策略提供了重要支持。"</p>
+                                        <h6 class="white center">张伟 // 加密货币交易员</h6>
+                                    </div>  
+                                </div>
+                            </div>
+                            <div class="swiper-pagination mt-56 mb-5"></div>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 常见问题部分 -->
+        <section class="tf-section bg-mode" id="faq">
+            <div class="container">
+                <div class="row">  
+                    <div class="col-md-12">
+                        <div class="wrap-accordion bg-10">
+                            <div class="inner flex mb-25">
+                                <div class="content">
+                                    <div class="tf-title-style4 mobile-mb30 d-rotate wow">
+                                        <h3 class="title mb-16 rotate-text mb-16">常见问题</h3>
+                                        <p class="color_1 wow fadeIn" data-wow-delay=".3s">关于加密货币警报机器人的常见问题解答</p>
+                                    </div> 
+                                </div>
+                                 <div class="flat-accordion max-width-930 wow fadeIn" data-wow-delay=".3s"> 
+                                    <div class="flat-toggle active">
+                                        <div class="toggle-title active">
+                                        <h5 class="title">如何设置价格提醒？</h5>
+                                        <span class="icon">
+                                            <svg width="22" height="14" viewBox="0 0 22 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M2.33464 11.25L11.0013 1.91667L19.668 11.25" stroke="#171717" stroke-width="3" stroke-miterlimit="10" stroke-linecap="square" stroke-linejoin="round"/>
+                                            </svg>
+                                        </span>
+                                        </div>
+                                        <div class="toggle-content">
+                                            <p>登录后，在控制面板中选择您想要监控的加密货币，然后设置价格上限和下限。当价格达到设定条件时，您将收到通知。</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flat-toggle">
+                                        <div class="toggle-title">
+                                        <h5 class="title">支持哪些加密货币？</h5>
+                                        <span class="icon">
+                                            <svg width="22" height="14" viewBox="0 0 22 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M2.33464 11.25L11.0013 1.91667L19.668 11.25" stroke="#171717" stroke-width="3" stroke-miterlimit="10" stroke-linecap="square" stroke-linejoin="round"/>
+                                            </svg>
+                                        </span>
+                                        </div>
+                                        <div class="toggle-content">
+                                            <p>基础版支持5种主流加密货币，专业版支持20种加密货币，企业版支持无限数量的加密货币，包括所有主流币种和大部分小众币种。</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flat-toggle">
+                                        <div class="toggle-title">
+                                        <h5 class="title">如何升级我的套餐？</h5>
+                                        <span class="icon">
+                                            <svg width="22" height="14" viewBox="0 0 22 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M2.33464 11.25L11.0013 1.91667L19.668 11.25" stroke="#171717" stroke-width="3" stroke-miterlimit="10" stroke-linecap="square" stroke-linejoin="round"/>
+                                            </svg>
+                                        </span>
+                                        </div>
+                                        <div class="toggle-content">
+                                            <p>您可以在账户设置中随时升级您的套餐，升级后立即生效。我们会按照剩余天数比例计算差价，无需支付全额费用。</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flat-toggle">
+                                        <div class="toggle-title">
+                                        <h5 class="title">警报机器人与加密货币交易仪表板有什么区别？</h5>
+                                        <span class="icon">
+                                            <svg width="22" height="14" viewBox="0 0 22 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M2.33464 11.25L11.0013 1.91667L19.668 11.25" stroke="#171717" stroke-width="3" stroke-miterlimit="10" stroke-linecap="square" stroke-linejoin="round"/>
+                                            </svg>
+                                        </span>
+                                        </div>
+                                        <div class="toggle-content">
+                                            <p>警报机器人专注于价格监控和提醒功能，而加密货币交易仪表板提供更全面的市场分析、投资组合管理和交易执行功能。您可以点击页面上的警报机器人卡片跳转到交易仪表板。</p>
+                                        </div>
+                                    </div>
+                                 </div> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 立即行动部分 -->
+        <section class="tf-section bg-primary">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 offset-md-2 text-center">
+                        <h2 class="heading white">准备好开始使用加密货币警报机器人了吗？</h2>
+                        <p class="color_1 mb-50">立即注册，享受3天免费试用</p>
+                        <a href="#" class="btn btn-white"><span>立即开始</span></a>
+                        <a href="E:\\业务文件\\html\\crypto_trading_dashboard.html" class="btn btn-outline-white ml-3"><span>查看交易仪表板</span></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 页脚 -->
+        <footer id="footer" class="style2 black">
+            <div class="cta themes-bg-style themes-color">
+            <div class="container wow fadeIn" data-wow-delay=".3s">
+                <div class="row">
+                <div class="col-md-6">
+                    <div class="tf-title-style4 mobile-mb30">
+                    <h3 class="title white mb-0">
+                        准备好开始使用 <br class="show-destop" />
+                        加密货币警报机器人了吗？
+                    </h3>
+                    </div>
+                </div>
+                <div
+                    class="col-md-6 flex justify-end-destop align-items-center"
+                >
+                    <a href="#" class="tf-button hover-white"
+                    >立即开始</a>
+                </div>
+                </div>
+            </div>
+            </div>
+            <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-12">
+                <div class="footer-left">
+                    <div class="footer__logo">
+                    <a href="#"
+                        ><img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/logo/logo33@2x.png" alt="加密货币警报机器人"
+                    /></a>
+                    </div>
+                    <ul class="social flex align-items-center">
+                    <li>
+                        <a href="#"
+                        ><img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/facebook.svg" alt="Facebook"
+                        /></a>
+                    </li>
+                    <li>
+                        <a href="#"
+                        ><img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/twitter.svg" alt="Twitter"
+                        /></a>
+                    </li>
+                    <li>
+                        <a href="#"
+                        ><img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/dribbble.svg" alt="Dribbble"
+                        /></a>
+                    </li>
+                    <li>
+                        <a href="#"
+                        ><img src="为自由职业者设计的专业HTML模板 - Norstar/assets/images/icon/behance.svg" alt="Behance"
+                        /></a>
+                    </li>
+                    </ul>
+                    <p>©2023 加密货币警报机器人. 保留所有权利.</p>
+                </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="footer-contact style1">
+                    <p>电子邮箱:</p>
+                    <a href="mailto:support@alertbot.com">support@alertbot.com</a>
+                </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="footer-contact style2">
+                    <p>联系电话</p>
+                    <a href="tel:+8612345678901">+86 123 4567 8901</a>
+                </div>
+                </div>
+            </div>
+            </div>
+        </footer>
+    </div>
+
+    <a id="scroll-top"></a>
+
+    <script src="为自由职业者设计的专业HTML模板 - Norstar/app/js/jquery.min.js"></script>
+    <script src="为自由职业者设计的专业HTML模板 - Norstar/app/js/switcher.js"></script>
+    <script type="text/javascript" src="为自由职业者设计的专业HTML模板 - Norstar/app/js/jquery.cookie.min.js"></script>
+    
+    
+    <script src="为自由职业者设计的专业HTML模板 - Norstar/app/js/swiper-bundle.min.js"></script>
+    <script src="为自由职业者设计的专业HTML模板 - Norstar/app/js/swiper.js"></script>
+    <script src="为自由职业者设计的专业HTML模板 - Norstar/app/js/jquery-validate.js"></script>
+    <script src="为自由职业者设计的专业HTML模板 - Norstar/app/js/countto.js"></script>
+    <script src="为自由职业者设计的专业HTML模板 - Norstar/app/js/jquery.easing.js"></script>
+    <script src="为自由职业者设计的专业HTML模板 - Norstar/app/js/wow.min.js"></script>
+    <script src="为自由职业者设计的专业HTML模板 - Norstar/app/js/app.js"></script>
+    <script src="为自由职业者设计的专业HTML模板 - Norstar/app/js/parallax.js"></script> 
+    <script>
+        // 初始化选项卡切换功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabMenus = document.querySelectorAll('.tab-menu');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabMenus.forEach(menu => {
+                menu.addEventListener('click', function() {
+                    // 移除所有活动状态
+                    tabMenus.forEach(m => m.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    // 添加当前活动状态
+                    this.classList.add('active');
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // 初始化手风琴效果
+            const toggles = document.querySelectorAll('.flat-toggle');
+            toggles.forEach(toggle => {
+                const title = toggle.querySelector('.toggle-title');
+                title.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    const content = this.nextElementSibling;
+                    content.style.display = content.style.display === 'block' ? 'none' : 'block';
+                });
+            });
+            
+            // 简单的有效期显示逻辑
+            function updateValidityDisplay() {
+                const validityElement = document.getElementById('validity-remaining');
+                if (!validityElement) {
+                    return;
+                }
+                
+                // 简单的有效期显示逻辑，实际数据将在各个界面中通过API获取
+                validityElement.textContent = '加载中...';
+            }
+            
+            // 用户退出登录
+            function logoutUser() {
+                // 调用登出API
+                fetch('http://43.134.114.73:8000/api/auth/logout', {
+                    method: 'POST',
+                    credentials: 'include' // 包含cookies
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('登出失败');
+                    }
+                    return response.json();
+                })
+                .catch(error => {
+                    console.error('登出失败:', error);
+                })
+                .finally(() => {
+                    // 清除本地存储的所有用户信息和session数据
+                    localStorage.removeItem('user_id');
+                    localStorage.removeItem('username');
+                    localStorage.removeItem('email');
+                    localStorage.removeItem('session_id');
+                    localStorage.removeItem('rememberedUser');
+                    // 清除任何可能存在的旧版JWT相关数据
+                    localStorage.removeItem('access_token');
+                    localStorage.removeItem('token_type');
+                    // 刷新页面或跳转到首页
+                    window.location.href = 'index.html';
+                });
+            }
+            
+            // 更新有效期显示
+            updateValidityDisplay();
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV CONNECT - 首页</title>
+    <!-- 设置网站图标 -->
+    <!-- 设置网站图标为圆形 -->
+    <link rel="icon" type="image/png" href="picture/通用资源/logo_url.png">
+    <link rel="shortcut icon" type="image/png" href="picture/通用资源/logo_url.png">
+    <!-- 确保在支持的浏览器中显示为圆形 -->
+    <link rel="mask-icon" href="picture/通用资源/logo_url.png" color="#5bbad5">
+    <!-- 移动设备图标 -->
+      <link rel="apple-touch-icon-precomposed" href="picture/通用资源/logo_url.png" />
+    <!-- 引入公共样式 -->
+    <link rel="stylesheet" href="style.css">
+    <!-- 引入激活码弹窗组件 -->
+    <script type="module">
+        import { activationModal } from './components/activation-modal.js';
+        window.activationModal = activationModal;
+    </script>
+    
+    <!-- 兼容不支持ES模块的浏览器 -->
+    <script nomodule defer src="./components/activation-modal.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* 页面标题部分样式 */
+        .page-title {
+            background: #333;
+            color: white;
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .page-title .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+        }
+        
+        .page-title .container {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .content-box {
+            text-align: center;
+        }
+        
+        .content-box h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .content-box p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* 服务部分样式 */
+        .services-section {
+            padding: 80px 0;
+            background: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title h2 {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+        
+        .section-title p {
+            color: #666;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .service-card {
+            background: #f9f9f9;
+            padding: 30px;
+            border-radius: 8px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            background: #333;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        .service-card h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .service-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* 项目展示部分样式 */
+        .projects-section {
+            padding: 80px 0;
+            background: #f5f5f5;
+        }
+        
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .project-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .project-image {
+            width: 100%;
+            height: 200px;
+            background: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 36px;
+        }
+        
+        .project-content {
+            padding: 20px;
+        }
+        
+        .project-content h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .project-content p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .project-link {
+            display: inline-block;
+            color: #333;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        /* 统计数据部分样式 */
+        .stats-section {
+            padding: 80px 0;
+            background: #333;
+            color: white;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+        
+        .stat-item h3 {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        
+        .stat-item p {
+            color: #ccc;
+            font-size: 16px;
+        }
+
+        /* 底部样式 */
+        footer {
+            background: #222;
+            color: white;
+            padding: 40px 0;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        .footer-column {
+            flex: 1;
+            min-width: 200px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-column h4 {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column a:hover {
+            color: white;
+        }
+        
+      
+    </style>
+</head>
+<body>
+
+    <!-- 页面标题部分 - 仿照Home-Corperate.html设计 -->
+    <section class="page-title">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="content-box">
+                <h1>加密货币交易解决方案</h1>
+                <p>我们提供专业的加密货币交易平台和API服务，助您在数字资产领域取得成功</p>
+                <div class="btn-wrapper">
+                    <a href="#" class="btn">立即开始</a>
+                    <a href="https://t.me/+I5fyTmn79eliODc1" class="btn">加入社群</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 服务部分 - 仿照Home-Corperate.html设计 -->
+    <section class="services-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>我们的服务</h2>
+                <p>提供全方位的加密货币交易相关服务，满足您的各种需求</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fa fa-line-chart"></i>
+                    </div>
+                    <h3>API交易服务</h3>
+                    <p>提供稳定可靠的加密货币交易API，支持多种交易策略和自动化交易</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fa fa-robot"></i>
+                    </div>
+                    <h3>智能交易机器人</h3>
+                    <p>基于AI技术的智能交易机器人，帮助您实现自动化交易和风险管理</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fa fa-shield"></i>
+                    </div>
+                    <h3>安全保障</h3>
+                    <p>多重安全防护机制，保障您的资产安全和交易信息的机密性</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fa fa-area-chart"></i>
+                    </div>
+                    <h3>tv策略</h3>
+                    <p>助您的想法成为24小时运作的策略</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fa fa-book"></i>
+                    </div>
+                    <h3>交易教程</h3>
+                    <p>详细的加密货币交易教程和策略指南，助您快速入门和提升</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fa fa-headphones"></i>
+                    </div>
+                    <h3>24/7客户支持</h3>
+                    <p>全天候专业客户支持团队，随时为您解决问题和提供帮助</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 项目展示部分 - 仿照Home-Corperate.html设计 -->
+    <section class="projects-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>为什么使用机器人</h2>
+            </div>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src = "picture/首页/人在交易外思考.png" style="width: 100%; max-width: 100%; height: 100%; 
+                                        border: 1px solid #ddd; border-radius: 8px; 
+                                        box-shadow: 0 4px 8px rgba(0,0,0,0);" alt = "人在交易外思考">
+                    </div>
+                    <div class="project-content">
+                        <h3>更稳定的交易</h3>
+                        <p>人在交易外思考，只让机器执行</p>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src = "picture/首页/让交易追随自己的决策.jpg" style="width: 100%; max-width: 100%; height: 100%; 
+                                        border: 1px solid #ddd; border-radius: 8px; 
+                                        box-shadow: 0 4px 8px rgba(0,0,0,0);" alt = "让交易追随自己的决策">
+                    </div>
+                    <div class="project-content">
+                        <h3>让交易跟随自己的决策</h3>
+                        <p>指定单个方向，在牛市到来时只做多，在震荡中积累筹码</p>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src = "picture/首页/在合适的时机进场.png" style="width: 100%; max-width: 100%; height: 100%; 
+                                        border: 1px solid #ddd; border-radius: 8px; 
+                                        box-shadow: 0 4px 8px rgba(0,0,0,0);" alt = "在合适的时机进场">
+                    </div>
+                    <div class="project-content">
+                        <h3>在合适的时机进场</h3>
+                        <p>不让情绪干扰你的决策</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 统计数据部分 - 仿照Home-Corperate.html设计 -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h3>10k+</h3>
+                    <p>支持币种</p>
+                </div>
+                <div class="stat-item">
+                    <h3>99.9%</h3>
+                    <p>系统可用性</p>
+                </div>
+                <div class="stat-item">
+                    <h3>24/7</h3>
+                    <p>技术支持</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 底部部分 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h4>关于我们</h4>
+                    <p>专业的加密货币交易解决方案提供商，致力于为用户提供安全、高效、智能的交易工具和服务。</p>
+                </div>
+                <div class="footer-column">
+                    <h4>快速链接</h4>
+                    <ul>
+                        <li><a href="#">首页</a></li>
+                        <li><a href="#">产品</a></li>
+                        <li><a href="#">价格</a></li>
+                        <li><a href="#">文档</a></li>
+                        <li><a href="#">联系我们</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>联系我们</h4>
+                    <ul>
+                        <li><i class="fa fa-envelope"></i> support@example.com</li>
+                        <li><i class="fa fa-phone"></i> +86 123 4567 8910</li>
+                        <li><i class="fa fa-map-marker"></i> 北京市海淀区科技园</li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>关注我们</h4>
+                    <div class="social-icons">
+                        <a href="#"><i class="fa fa-weixin"></i></a>
+                        <a href="#"><i class="fa fa-weibo"></i></a>
+                        <a href="#"><i class="fa fa-telegram"></i></a>
+                        <a href="#"><i class="fa fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 加密货币交易平台. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <script>
+        // 加载导航栏
+        function loadNavbar() {
+            // 检查用户是否登录（这里简化处理，实际应根据后端判断）
+            const isLoggedIn = localStorage.getItem('user_id') && localStorage.getItem('session_id');
+            
+            // 选择要加载的导航栏类型
+            const navbarFile = isLoggedIn ? 'navbar-loggedin.html' : 'navbar.html';
+            
+            // 加载导航栏HTML
+            fetch(navbarFile)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('加载导航栏失败');
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    // 注入导航栏HTML到页面
+                    const navbarContainer = document.createElement('div');
+                    navbarContainer.id = 'navbar-container';
+                    navbarContainer.innerHTML = html;
+                    document.body.insertBefore(navbarContainer, document.body.firstChild);
+                    
+                    // 设置当前页面的active状态
+                    setActiveNavItem('index.html');
+                    
+                    // 在导航栏加载完成后，绑定激活码按钮事件
+                    setTimeout(() => {
+                        if (window.activationModal) {
+                            const activationButton = document.getElementById('activation-button');
+                            if (activationButton) {
+                                activationButton.addEventListener('click', function() {
+                                    window.activationModal.open();
+                                });
+                            }
+                        }
+                        
+                        // 绑定退出登录按钮事件
+                        const logoutButton = document.getElementById('logout-button');
+                        if (logoutButton) {
+                            logoutButton.addEventListener('click', function() {
+                                // 直接调用登出函数或定义登出逻辑
+                                fetch('http://43.134.114.73:8000/api/auth/logout', {
+                                    method: 'POST',
+                                    credentials: 'include'
+                                })
+                                .catch(error => {
+                                    console.error('登出失败:', error);
+                                })
+                                .finally(() => {
+                                    // 清除本地存储的所有用户信息和session数据
+                                    localStorage.removeItem('user_id');
+                                    localStorage.removeItem('username');
+                                    localStorage.removeItem('email');
+                                    localStorage.removeItem('session_id');
+                                    localStorage.removeItem('rememberedUser');
+                                    localStorage.removeItem('access_token');
+                                    localStorage.removeItem('token_type');
+                                    // 刷新页面或跳转到首页
+                                    window.location.href = 'index.html';
+                                });
+                            });
+                        }
+                    }, 100);
+                })
+                .catch(error => {
+                    console.error('加载导航栏失败:', error);
+                });
+        
+
+            }
+        
+        // 设置当前页面的导航项为active状态
+        function setActiveNavItem(currentPage) {
+            // 等待导航栏加载完成
+            setTimeout(() => {
+                const navLinks = document.querySelectorAll('.nav-links a');
+                
+                navLinks.forEach(link => {
+                    // 获取链接的href属性值
+                    const href = link.getAttribute('href');
+                    
+                    // 如果链接指向当前页面，则添加active类
+                    if (href === currentPage) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+            }, 100);
+        }
+        
+        // 简单的动画效果
+        document.addEventListener('DOMContentLoaded', function() {
+            // 加载导航栏
+            loadNavbar();
+            
+            // 更新有效期显示
+            function updateValidityDisplay() {
+                console.log('updateValidityDisplay函数被调用');
+                
+                // 从localStorage获取session_id
+                const sessionId = localStorage.getItem('session_id');
+                console.log('session_id值:', sessionId);
+                
+                const validityElement = document.getElementById('validity-remaining');
+                console.log('validityElement元素:', validityElement);
+                
+                if (!validityElement) {
+                    console.log('未找到validity-remaining元素');
+                    return;
+                }
+                
+                // 先显示加载中
+                validityElement.textContent = '加载中...';
+                console.log('已设置加载中状态');
+                
+                if (!sessionId) {
+                    console.log('session_id不存在，显示请先登录');
+                    validityElement.textContent = '请先登录';
+                    return;
+                }
+                
+                // 调用API获取用户信息
+                console.log('准备调用API:', `http://43.134.114.73:8000/api/user/profile?session_id=${sessionId}`);
+                fetch(`http://43.134.114.73:8000/api/user/profile?session_id=${sessionId}`)
+                    .then(response => {
+                        console.log('API响应状态:', response.status);
+                        if (!response.ok) {
+                            throw new Error('获取用户信息失败，状态码: ' + response.status);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('API返回数据:', data);
+                        // 检查响应状态
+                        if (data.status === 'success' && data.membership_expire_at) {
+                            // 显示有效期信息
+                            validityElement.textContent = `有效期: ${data.membership_expire_at}`;
+                        } else {
+                            validityElement.textContent = '未找到有效期信息';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('获取用户信息失败:', error);
+                        validityElement.textContent = '加载失败，请稍后重试';
+                    });
+            }
+            // 更新有效期显示
+            updateValidityDisplay();
+            // 用户退出登录
+            function logoutUser() {
+                // 调用登出API
+                fetch('http://43.134.114.73:8000/api/auth/logout', {
+                    method: 'POST',
+                    credentials: 'include' // 包含cookies
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('登出失败');
+                    }
+                    return response.json();
+                })
+                .catch(error => {
+                    console.error('登出失败:', error);
+                })
+                .finally(() => {
+                    // 清除本地存储的所有用户信息和session数据
+                    localStorage.removeItem('user_id');
+                    localStorage.removeItem('username');
+                    localStorage.removeItem('email');
+                    localStorage.removeItem('session_id');
+                    localStorage.removeItem('rememberedUser');
+                    // 清除任何可能存在的旧版JWT相关数据
+                    localStorage.removeItem('access_token');
+                    localStorage.removeItem('token_type');
+                    // 刷新页面或跳转到首页
+                    window.location.href = 'index.html';
+                });
+            }
+            
+            
+            // 页面滚动动画
+            const handleScroll = () => {
+                const elements = document.querySelectorAll('.service-card, .project-card');
+                elements.forEach(element => {
+                    const position = element.getBoundingClientRect();
+                    if(position.top < window.innerHeight && position.bottom >= 0) {
+                        element.style.opacity = '1';
+                        element.style.transform = 'translateY(0)';
+                    }
+                });
+            };
+
+            // 初始设置
+            document.querySelectorAll('.service-card, .project-card').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            });
+
+            // 添加滚动事件监听
+            window.addEventListener('scroll', handleScroll);
+            // 初始触发一次
+            handleScroll();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>帮助中心 - TV CONNECT</title>
+    <!-- 设置网站图标 -->
+    <!-- 设置网站图标为圆形 -->
+    <link rel="icon" type="image/png" href="picture/通用资源/logo_url.png">
+    <link rel="shortcut icon" type="image/png" href="picture/通用资源/logo_url.png">
+    <!-- 确保在支持的浏览器中显示为圆形 -->
+    <link rel="mask-icon" href="picture/通用资源/logo_url.png" color="#5bbad5">
+    <!-- 移动设备图标 -->
+    <link rel="apple-touch-icon-precomposed" href="picture/通用资源/logo_url.png" />
+
+    
+    <!-- 引入公共样式 -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- 引入激活码弹窗组件 -->
+    <script type="module">
+        import { activationModal } from './components/activation-modal.js';
+        window.activationModal = activationModal;
+    </script>
+    
+    <!-- 兼容不支持ES模块的浏览器 -->
+    <script nomodule defer src="./components/activation-modal.js"></script>
+    <style>
+        <!-- 全局样式 -->
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            color: #333;
+            background-color: #fff;
+            line-height: 1.6;
+        }
+        a {
+            color: #333;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        a:hover {
+            color: #000;
+        }
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 页面标题区域 */
+        .page-title-inner {
+            margin-top: 0;
+            padding: 80px 0;
+            background-color: #f5f5f5;
+            text-align: center;
+        }
+        .breadcrumb {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            list-style: none;
+        }
+        .breadcrumb li {
+            font-size: 14px;
+        }
+        .breadcrumb li:not(:last-child):after {
+            content: '/';
+            margin-left: 10px;
+            color: #999;
+        }
+        .heading {
+            font-size: 42px;
+            margin-bottom: 16px;
+            color: #000;
+        }
+        /* FAQ部分样式 */
+        .tf-section {
+            padding: 80px 0;
+        }
+        .wrap-accordion {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .inner {
+            margin-bottom: 60px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .content {
+            flex: 1;
+            min-width: 200px;
+            margin-bottom: 30px;
+        }
+        .tf-title-style4 {
+            margin-bottom: 20px;
+        }
+        .rotate-text {
+            font-size: 32px;
+            font-weight: bold;
+            transform: rotate(-90deg);
+            transform-origin: left top;
+            position: absolute;
+            left: 0;
+            top: 0;
+            white-space: nowrap;
+            opacity: 0.05;
+        }
+        .title {
+            font-size: 24px;
+            margin-bottom: 16px;
+            color: #000;
+        }
+        .flat-accordion {
+            flex: 2;
+            min-width: 300px;
+        }
+        .flat-toggle {
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .toggle-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .toggle-title:hover {
+            color: #000;
+        }
+        .toggle-title h5 {
+            font-size: 18px;
+            font-weight: 500;
+            margin: 0;
+        }
+        .icon svg {
+            transition: transform 0.3s;
+        }
+        .toggle-title.active .icon svg {
+            transform: rotate(180deg);
+        }
+        .toggle-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            padding-bottom: 0;
+        }
+        .flat-toggle.active .toggle-content {
+            max-height: 500px;
+            padding-bottom: 20px;
+        }
+        .toggle-content p {
+            color: #666;
+            line-height: 1.6;
+        }
+        /* 页脚样式 */
+        footer {
+            background-color: #000;
+            color: #fff;
+            padding: 60px 0 30px;
+        }
+        .cta {
+            background-color: #111;
+            padding: 40px 0;
+            margin-bottom: 40px;
+        }
+        .cta .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        .cta .title {
+            color: #fff;
+            margin: 0;
+        }
+        .tf-button {
+            background-color: #fff;
+            color: #000;
+            padding: 12px 30px;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .tf-button:hover {
+            background-color: #ddd;
+            color: #000;
+        }
+        .footer-left {
+            margin-bottom: 30px;
+        }
+        .footer__logo {
+            margin-bottom: 20px;
+        }
+        .footer__logo img {
+            max-width: 150px;
+        }
+        .social {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .social a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #222;
+            color: #fff;
+            transition: all 0.3s;
+        }
+        .social a:hover {
+            background-color: #fff;
+            color: #000;
+        }
+        .footer-contact {
+            margin-bottom: 30px;
+        }
+        .footer-contact p {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 10px;
+        }
+        .footer-contact a {
+            color: #fff;
+            font-size: 16px;
+        }
+        .footer-contact a:hover {
+            color: #ddd;
+        }
+        /* Header Styles */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e0e0e0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 30px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .nav-links a.active {
+            color: #000;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #333;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        /* 按钮样式 - 保持黑白色调 */
+        .btn {
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            background: #333; /* 黑色背景 */
+            color: white; /* 白色文字 */
+            border: none;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background: #1a1a1a; /* 悬停时更深的黑色 */
+        }
+        
+        .btn-outline {
+            border: 1px solid #333;
+            color: #333;
+            background: transparent;
+        }
+        
+        .btn-outline:hover {
+            background: #f0f0f0;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header-nav {
+                flex-direction: column;
+                padding: 10px;
+            }
+        
+        .header-left {
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .nav-links {
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .auth-buttons {
+            gap: 10px;
+        }}
+    </style>
+</head>
+<body>
+    <!-- 统一导航栏容器 -->
+    <div id="navbar-container"></div>
+
+
+    <!-- 页面标题区域 -->
+    <section class="page-title-inner">
+        <div class="container">
+
+            <h1 class="heading">常见问题解答</h1>
+            <p>我们收集了用户最常问到的问题，帮助您快速了解平台功能和服务</p>
+        </div>
+    </section>
+
+    <!-- FAQ部分 -->
+    <section class="tf-section">
+        <div class="container">
+            <div class="wrap-accordion">
+                <!-- 账户相关问题 -->
+                <div class="inner">
+                    <div class="content">
+                        <div class="tf-title-style4">
+                            <h3 class="rotate-text">ACCOUNT</h3>
+                            <h3 class="title">账户相关问题</h3>
+                            <p>关于账户注册、登录和安全设置的常见问题</p>
+                        </div>
+                    </div>
+                    <div class="flat-accordion">
+                        <div class="flat-toggle active">
+                            <div class="toggle-title active">
+                                <h5>如何注册加密货币交易平台账户？</h5>
+                                <span class="icon">
+                                    <svg width="22" height="14" viewBox="0 0 22 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M2.33464 11.25L11.0013 1.91667L19.668 11.25" stroke="#171717" stroke-width="3" stroke-miterlimit="10" stroke-linecap="square" stroke-linejoin="round"/>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="toggle-content">
+                                <p>注册账户非常简单，只需点击页面右上角的"注册"按钮，填写您的邮箱地址、设置密码，并按照提示完成身份验证即可。我们会发送一封验证邮件到您的邮箱，请点击邮件中的链接完成注册流程。</p>
+                            </div>
+                        </div>
+                        <div class="flat-toggle">
+                            <div class="toggle-title">
+                                <h5>忘记密码如何找回？</h5>
+                                <span class="icon">
+                                    <svg width="22" height="14" viewBox="0 0 22 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M2.33464 11.25L11.0013 1.91667L19.668 11.25" stroke="#171717" stroke-width="3" stroke-miterlimit="10" stroke-linecap="square" stroke-linejoin="round"/>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="toggle-content">
+                                <p>在登录页面点击"忘记密码"链接，输入您注册时使用的邮箱地址，我们会发送重置密码的链接到您的邮箱。请注意查收邮件，并在有效期内完成密码重置操作。</p>
+                            </div>
+                        </div>
+                        <div class="flat-toggle">
+                            <div class="toggle-title">
+                                <h5>如何提高账户安全性？</h5>
+                                <span class="icon">
+                                    <svg width="22" height="14" viewBox="0 0 22 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M2.33464 11.25L11.0013 1.91667L19.668 11.25" stroke="#171717" stroke-width="3" stroke-miterlimit="10" stroke-linecap="square" stroke-linejoin="round"/>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="toggle-content">
+                                <p>我们强烈建议您开启两步验证（2FA）功能，使用谷歌验证器或手机短信验证。此外，定期更换密码、不与他人共享账户信息、确保您的登录环境安全，也是保障账户安全的重要措施。</p>
+                            </div>
+                        </div>
+                        <div class="flat-toggle">
+                            <div class="toggle-title">
+                                <h5>可以在多个设备上同时登录账户吗？</h5>
+                                <span class="icon">
+                                    <svg width="22" height="14" viewBox="0 0 22 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M2.33464 11.25L11.0013 1.91667L19.668 11.25" stroke="#171717" stroke-width="3" stroke-miterlimit="10" stroke-linecap="square" stroke-linejoin="round"/>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="toggle-content">
+                                <p>是的，您可以在多个设备上同时登录您的账户。我们会在您的安全中心显示所有活跃的登录会话，您可以随时查看并终止可疑的登录。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 机器人相关问题 -->
+                <div class="inner">
+                    <div class="content">
+                        <div class="tf-title-style4">
+                            <h3 class="rotate-text">ROBOT</h3>
+                            <h3 class="title">机器人相关问题</h3>
+                            <p>关于交易机器人设置和使用的常见问题</p>
+                        </div>
+                    </div>
+                    <div class="flat-accordion">
+                        <div class="flat-toggle">
+                            <div class="toggle-title">
+                                <h5>如何设置TV策略机器人？</h5>
+                                <span class="icon">
+                                    <svg width="22" height="14" viewBox="0 0 22 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M2.33464 11.25L11.0013 1.91667L19.668 11.25" stroke="#171717" stroke-width="3" stroke-miterlimit="10" stroke-linecap="square" stroke-linejoin="round"/>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="toggle-content">
+                                <p>设置TV策略机器人需要先在TradingView上创建您的交易策略，然后在我们的平台上绑定您的交易所API，设置交易参数，最后将TradingView的信号连接到我们的机器人。详细步骤请参考我们的视频教程。</p>
+                            </div>
+                        </div>
+                        <div class="flat-toggle">
+                            <div class="toggle-title">
+                                <h5>机器人支持哪些交易所？</h5>
+                                <span class="icon">
+                                    <svg width="22" height="14" viewBox="0 0 22 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M2.33464 11.25L11.0013 1.91667L19.668 11.25" stroke="#171717" stroke-width="3" stroke-miterlimit="10" stroke-linecap="square" stroke-linejoin="round"/>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="toggle-content">
+                                <p>我们的机器人目前支持Binance、Coinbase Pro、Kraken、Huobi、OKEx等主流加密货币交易所。我们会不断增加对更多交易所的支持，请关注我们的更新公告。</p>
+                            </div>
+                        </div>
+                        <div class="flat-toggle">
+                            <div class="toggle-title">
+                                <h5>如何监控机器人的交易表现？</h5>
+                                <span class="icon">
+                                    <svg width="22" height="14" viewBox="0 0 22 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M2.33464 11.25L11.0013 1.91667L19.668 11.25" stroke="#171717" stroke-width="3" stroke-miterlimit="10" stroke-linecap="square" stroke-linejoin="round"/>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="toggle-content">
+                                <p>您可以在平台的"机器人管理"页面查看每个机器人的实时交易数据、历史表现和绩效报告。我们提供了详细的图表和统计信息，帮助您评估机器人的盈利能力和风险水平。</p>
+                            </div>
+                        </div>
+                        <div class="flat-toggle">
+                            <div class="toggle-title">
+                                <h5>机器人出现故障怎么办？</h5>
+                                <span class="icon">
+                                    <svg width="22" height="14" viewBox="0 0 22 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M2.33464 11.25L11.0013 1.91667L19.668 11.25" stroke="#171717" stroke-width="3" stroke-miterlimit="10" stroke-linecap="square" stroke-linejoin="round"/>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="toggle-content">
+                                <p>如果您的机器人出现故障，请首先检查您的网络连接和交易所API状态。如果问题仍然存在，请联系我们的技术支持团队，我们会尽快为您解决问题。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 付款相关问题 -->
+                <div class="inner">
+                    <div class="content">
+                        <div class="tf-title-style4">
+                            <h3 class="rotate-text">PAYMENT</h3>
+                            <h3 class="title">付款相关问题</h3>
+                            <p>关于订阅计划和付款方式的常见问题</p>
+                        </div>
+                    </div>
+                    <div class="flat-accordion">
+                        <div class="flat-toggle">
+                            <div class="toggle-title">
+                                <h5>有哪些订阅计划可供选择？</h5>
+                                <span class="icon">
+                                    <svg width="22" height="14" viewBox="0 0 22 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M2.33464 11.25L11.0013 1.91667L19.668 11.25" stroke="#171717" stroke-width="3" stroke-miterlimit="10" stroke-linecap="square" stroke-linejoin="round"/>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="toggle-content">
+                                <p>我们提供多种订阅计划，包括免费试用、基础版、专业版和企业版。不同的计划提供不同的功能和服务，您可以根据自己的需求选择最适合的计划。详细的计划对比请查看我们的价格页面。</p>
+                            </div>
+                        </div>
+                        <div class="flat-toggle">
+                            <div class="toggle-title">
+                                <h5>支持哪些付款方式？</h5>
+                                <span class="icon">
+                                    <svg width="22" height="14" viewBox="0 0 22 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M2.33464 11.25L11.0013 1.91667L19.668 11.25" stroke="#171717" stroke-width="3" stroke-miterlimit="10" stroke-linecap="square" stroke-linejoin="round"/>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="toggle-content">
+                                <p>我们支持信用卡（Visa、Mastercard、American Express）、PayPal以及加密货币（比特币、以太坊、USDT等）付款。所有付款都经过加密处理，确保您的支付安全。</p>
+                            </div>
+                        </div>
+                        <div class="flat-toggle">
+                            <div class="toggle-title">
+                                <h5>如何取消订阅？</h5>
+                                <span class="icon">
+                                    <svg width="22" height="14" viewBox="0 0 22 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M2.33464 11.25L11.0013 1.91667L19.668 11.25" stroke="#171717" stroke-width="3" stroke-miterlimit="10" stroke-linecap="square" stroke-linejoin="round"/>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="toggle-content">
+                                <p>您可以在"账户设置"中的"订阅管理"页面取消您的订阅。取消后，您的订阅将在当前计费周期结束后停止，不会产生额外费用。</p>
+                            </div>
+                        </div>
+                        <div class="flat-toggle">
+                            <div class="toggle-title">
+                                <h5>订阅计划可以升级或降级吗？</h5>
+                                <span class="icon">
+                                    <svg width="22" height="14" viewBox="0 0 22 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M2.33464 11.25L11.0013 1.91667L19.668 11.25" stroke="#171717" stroke-width="3" stroke-miterlimit="10" stroke-linecap="square" stroke-linejoin="round"/>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="toggle-content">
+                                <p>是的，您可以随时升级或降级您的订阅计划。升级计划会立即生效，系统会根据剩余的计费周期进行费用计算。降级计划会在当前计费周期结束后生效。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="cta">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="tf-title-style4">
+                            <h3 class="title">准备好开始使用我们的交易机器人了吗？</h3>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="价格.html" class="tf-button">立即开始</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="footer-left">
+                        <div class="footer__logo">
+                            <div style="font-size: 24px; font-weight: bold; color: #fff;">加密货币交易平台</div>
+                        </div>
+                        <ul class="social">
+                            <li><a href="#">Facebook</a></li>
+                            <li><a href="#">Twitter</a></li>
+                            <li><a href="#">Telegram</a></li>
+                            <li><a href="#">Discord</a></li>
+                        </ul>
+                        <p>©2023 加密货币交易平台. 保留所有权利.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="footer-contact">
+                        <p>电子邮箱：</p>
+                        <a href="mailto:support@example.com">support@example.com</a>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="footer-contact">
+                        <p>联系电话：</p>
+                        <a href="tel:+8610123456789">+86 10 12345 6789</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 加载导航栏
+        function loadNavbar() {
+            // 检查用户是否登录（这里简化处理，实际应根据后端判断）
+            const isLoggedIn = localStorage.getItem('user_id') && localStorage.getItem('session_id');
+            
+            // 选择要加载的导航栏类型
+            const navbarFile = isLoggedIn ? 'navbar-loggedin.html' : 'navbar.html';
+            
+            // 加载导航栏HTML
+            fetch(navbarFile)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('加载导航栏失败');
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    // 注入导航栏HTML到页面
+                    const navbarContainer = document.createElement('div');
+                    navbarContainer.id = 'navbar-container';
+                    navbarContainer.innerHTML = html;
+                    document.body.insertBefore(navbarContainer, document.body.firstChild);
+                    
+                    // 设置当前页面的active状态
+                    setActiveNavItem('help.html');
+                      
+                    // 在导航栏加载完成后，绑定激活码按钮事件
+                    setTimeout(() => {
+                        if (window.activationModal) {
+                            const activationButton = document.getElementById('activation-button');
+                            if (activationButton) {
+                                activationButton.addEventListener('click', function() {
+                                    window.activationModal.open();
+                                });
+                            }
+                        }
+                        
+                        // 绑定退出登录按钮事件
+                        const logoutButton = document.getElementById('logout-button');
+                        if (logoutButton) {
+                            logoutButton.addEventListener('click', function() {
+                                // 直接调用登出函数或定义登出逻辑
+                                fetch('http://43.134.114.73:8000/api/auth/logout', {
+                                    method: 'POST',
+                                    credentials: 'include'
+                                })
+                                .catch(error => {
+                                    console.error('登出失败:', error);
+                                })
+                                .finally(() => {
+                                    // 清除本地存储的所有用户信息和session数据
+                                    localStorage.removeItem('user_id');
+                                    localStorage.removeItem('username');
+                                    localStorage.removeItem('email');
+                                    localStorage.removeItem('session_id');
+                                    localStorage.removeItem('rememberedUser');
+                                    localStorage.removeItem('access_token');
+                                    localStorage.removeItem('token_type');
+                                    // 刷新页面或跳转到首页
+                                    window.location.href = 'index.html';
+                                });
+                            });
+                        }
+                    }, 100);
+                })
+                .catch(error => {
+                    console.error('加载导航栏失败:', error);
+                });
+        }
+        
+        // 设置当前页面的导航项为active状态
+        function setActiveNavItem(currentPage) {
+            // 等待导航栏加载完成
+            setTimeout(() => {
+                const navLinks = document.querySelectorAll('.nav-links a');
+                
+                navLinks.forEach(link => {
+                    // 获取链接的href属性值
+                    const href = link.getAttribute('href');
+                    
+                    // 如果链接指向当前页面，则添加active类
+                    if (href === currentPage) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+            }, 100);
+        }
+        
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 加载导航栏
+            loadNavbar();
+            
+            // 简单的有效期显示逻辑
+            function updateValidityDisplay() {
+                const validityElement = document.getElementById('validity-remaining');
+                if (!validityElement) {
+                    return;
+                }
+                
+                // 简单的有效期显示逻辑，实际数据将在各个界面中通过API获取
+                validityElement.textContent = '加载中...';
+            }
+            
+            // 用户退出登录
+            function logoutUser() {
+                // 调用登出API
+                fetch('http://43.134.114.73:8000/api/auth/logout', {
+                    method: 'POST',
+                    credentials: 'include' // 包含cookies
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('登出失败');
+                    }
+                    return response.json();
+                })
+                .catch(error => {
+                    console.error('登出失败:', error);
+                })
+                .finally(() => {
+                    // 清除本地存储的所有用户信息和session数据
+                    localStorage.removeItem('user_id');
+                    localStorage.removeItem('username');
+                    localStorage.removeItem('email');
+                    localStorage.removeItem('session_id');
+                    localStorage.removeItem('rememberedUser');
+                    // 清除任何可能存在的旧版JWT相关数据
+                    localStorage.removeItem('access_token');
+                    localStorage.removeItem('token_type');
+                    // 刷新页面或跳转到首页
+                    window.location.href = 'index.html';
+                });
+            }
+            
+            // 更新有效期显示
+            updateValidityDisplay();
+        });
+    </script>
+</body>
+</html>
